@@ -29,13 +29,14 @@ static const double FRAMERATE_IN_SECONDS = 1. / 30.;
 Coords mouse;
 
 /* Racket size */
-double racket_size = 10;
+double racket_size = 0.15;
 
 /* Error handling function */
 void onError(int error, const char* description)
 {
 	fprintf(stderr, "GLFW Error: %s\n", description);
 }
+
 
 void onWindowResized(GLFWwindow* window, int width, int height)
 {
@@ -92,8 +93,12 @@ void onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 
 /* The mouse now has new coords*/
 void movedCursor(GLFWwindow * window, double x, double y){
-	mouse.x = x;
-	mouse.y = y;
+	/*int hauteur, largeur;
+
+	glfwGetWindowSize(window, &largeur, &hauteur);*/
+
+	mouse.x = x; /* largeur;*/
+	mouse.y = y; /*/ hauteur;*/
 
 	printf("Mouse coords : %f - %f\n", mouse.x, mouse.y);
 }

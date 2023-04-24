@@ -34,6 +34,17 @@ void drawSquare(double r, double g, double b) {
 	glEnd();
 }
 
+
+void drawSquareForm(double size){
+	double half_size = size;
+	glBegin(GL_LINE_LOOP);
+		glVertex3d(-half_size,-half_size,0.0);
+		glVertex3d(half_size,-half_size,0.0);
+		glVertex3d(half_size,half_size,0.0);
+		glVertex3d(-half_size,half_size,0.0);
+	glEnd();
+}
+
 void drawCircle() {
 	glBegin(GL_TRIANGLE_FAN);
 		glVertex3f(0.0,0.0,0.0);

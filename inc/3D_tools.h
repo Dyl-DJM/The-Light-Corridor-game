@@ -29,3 +29,5 @@ void drawSphere();
 
 /* Small tools */
 float toRad(float deg);
+
+void drawSquareForm(double size);

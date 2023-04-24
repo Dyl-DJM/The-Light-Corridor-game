@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "3d_tools.h": "c"
+        "3d_tools.h": "c",
+        "draw_scene.h": "c"
     }
 }

@@ -6,11 +6,15 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "../inc/3D_tools.h"
+#include "3D_tools.h"
+#include "animation.h"
+
+void drawOrigin();
 
 void drawFrame();
 
 void drawRacket(double center_x, double center_y, double size);
 
+void drawBall();
 
 void drawCorridor();

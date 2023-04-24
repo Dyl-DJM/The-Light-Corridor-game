@@ -11,20 +11,25 @@
 #include <math.h>
 #include "../inc/3D_tools.h"
 #include "../inc/draw_scene.h"
+#include "../inc/types.h"
 
 
 /* Window properties */
 static const unsigned int WINDOW_WIDTH = 1000;
 static const unsigned int WINDOW_HEIGHT = 1000;
-static const char WINDOW_TITLE[] = "TD04 Ex01";
+static const char WINDOW_TITLE[] = "The Light Corridor";
 static float aspectRatio = 1.0;
 
 /* Minimal time wanted between two images */
 static const double FRAMERATE_IN_SECONDS = 1. / 30.;
 
-/* IHM flag */
-static int flag_animate_rot_scale = 0;
-static int flag_animate_rot_arm = 0;
+
+
+/* Mouse coords */
+Coords mouse;
+
+/* Racket size */
+double racket_size = 10;
 
 /* Error handling function */
 void onError(int error, const char* description)
@@ -57,12 +62,6 @@ void onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 			case GLFW_KEY_P :
 				glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 				break;
-			case GLFW_KEY_R :
-				flag_animate_rot_arm = 1-flag_animate_rot_arm;
-				break;
-			case GLFW_KEY_T :
-				flag_animate_rot_scale = 1-flag_animate_rot_scale;
-				break;
 			case GLFW_KEY_KP_9 :
 				if(dist_zoom<100.0f) dist_zoom*=1.1;
 				printf("Zoom is %f\n",dist_zoom);
@@ -90,6 +89,22 @@ void onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	}
 }
 
+
+/* The mouse now has new coords*/
+void movedCursor(GLFWwindow * window, double x, double y){
+	mouse.x = x;
+	mouse.y = y;
+
+	printf("Mouse coords : %f - %f\n", mouse.x, mouse.y);
+}
+
+
+
+
+
+
+
+
 int main(int argc, char** argv)
 {
 	/* GLFW initialisation */
@@ -111,8 +126,10 @@ int main(int argc, char** argv)
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
-	glfwSetWindowSizeCallback(window,onWindowResized);
-	glfwSetKeyCallback(window, onKey);
+	/* Callback events */
+	glfwSetWindowSizeCallback(window,onWindowResized);	/* Window resize */
+	glfwSetKeyCallback(window, onKey);	/* Key pressed */
+	glfwSetCursorPosCallback(window, movedCursor);	/* Mouse moved */
 
 	onWindowResized(window,WINDOW_WIDTH,WINDOW_HEIGHT);
 
@@ -139,7 +156,7 @@ int main(int argc, char** argv)
 		glTranslatef(0.0,0.0,-0.01);
 		glScalef(10.0,10.0,1.0);
 		glColor3f(0.0,0.0,0.1);
-		drawSquare();
+		drawSquare(0, 0, 0);
 		glBegin(GL_POINTS);
 			glColor3f(1.0,1.0,0.0);
 			glVertex3f(0.0,0.0,0.0);
@@ -148,6 +165,9 @@ int main(int argc, char** argv)
 
 		/* Scene rendering */
 		drawFrame();
+
+		/* Draw the racket */
+		drawRacket(mouse.x, mouse.y, racket_size);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

@@ -13,7 +13,7 @@ OBJDIR	= obj/
 OBJ_TOOLS = $(OBJDIR)3D_tools.o
 
 # Main module
-OBJ_MAIN= $(OBJ_TOOLS) $(OBJDIR)draw_scene.o $(OBJDIR)main.o
+OBJ_MAIN= $(OBJ_TOOLS) $(OBJDIR)draw_scene.o $(OBJDIR)types.o $(OBJDIR)main.o 
 EXEC_MAIN= $(BINDIR)tlc
 
 

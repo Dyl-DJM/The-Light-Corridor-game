@@ -15,3 +15,8 @@ void drawBase();
 void drawArm();
 
 void drawPan();
+
+void drawRacket(double center_x, double center_y, double size);
+
+
+void drawCorridor();

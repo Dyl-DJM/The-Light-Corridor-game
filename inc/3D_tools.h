@@ -19,7 +19,7 @@ extern float dist_zoom ; // Distance between origin and viewpoint
 void setCamera();
 
 /* Draw cannonic objet functions */
-void drawSquare();
+void drawSquare(double r, double g, double b);
 
 void drawCircle();
 

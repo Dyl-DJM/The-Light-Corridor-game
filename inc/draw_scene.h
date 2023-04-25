@@ -20,3 +20,5 @@ void drawBall();
 void drawSection(int id);
 
 void drawCorridor();
+
+void drawWall(int section, int pos);

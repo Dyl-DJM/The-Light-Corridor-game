@@ -151,10 +151,50 @@ void drawCorridor()
     }
 }
 
+/*
+Draw a wall at section depending on pos.
+0 = Up, 1 = Down, 2 = Left, 3 = Right
+
+*/
+void drawWall(int section, int pos)
+{
+    float wall_pos_x = 0;
+    float wall_pos_y = 0.25;
+    float wall_width = 1;
+    float wall_heigth = 0.5;
+    switch (pos)
+    {
+    case 0:
+        wall_heigth = 0.25;
+        wall_pos_y = 0.375;
+    case 1:
+        wall_heigth = 0.25;
+        wall_pos_y = 0.125;
+    case 2:
+        wall_width = 0.5;
+        wall_pos_x = -0.25;
+    case 3:
+        wall_width = 0.5;
+        wall_pos_x = 0.25;
+    }
+    glPushMatrix();
+    glTranslated(4 - section + 0.5, wall_pos_x, wall_pos_y);
+    glScaled(1, wall_width, wall_heigth);
+    glRotated(90, 0, 1, 0);
+    drawSquare(0, 1.0, 0);
+    glPopMatrix();
+}
+
 /* Draw the x, y, z axis */
 void drawFrame()
 {
-    // drawOrigin();
     drawCorridor();
+
+    // Wall tests
+    // drawWall(3, 0);
+    // drawWall(3, 1);
+    // drawWall(3, 2);
+    // drawWall(3, 3);
+
     drawBall();
 }

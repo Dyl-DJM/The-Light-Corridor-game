@@ -11,6 +11,8 @@
     glEnd();
 }*/
 
+int nb_section = 7;
+
 void drawOrigin()
 {
     glBegin(GL_LINES);
@@ -78,38 +80,75 @@ void drawBall()
     drawColoredSphere();
 }
 
-/* Draw the whole corridor in the scene*/
-void drawCorridor()
+void drawSection(int id)
 {
     glPushMatrix();
+    glTranslated(id + nb_section - 1, 0, 0);
 
     /* High and low rectangles */
     glPushMatrix();
     /*Low*/
-    glScaled(10, 1, 1);
-    drawSquare(0.5, 0.5, 1);
+    glScaled(1, 1, 1);
+    if (id % 2 == 0)
+    {
+        drawSquare(0.5, 0.5, 1);
+    }
+    else
+    {
+        drawSquare(0.6, 0.6, 0.6);
+    }
     /*High*/
     glTranslated(0, 0, 0.5);
-    drawSquare(0.5, 0.5, 1);
-
+    if (id % 2 == 0)
+    {
+        drawSquare(0.5, 0.5, 1);
+    }
+    else
+    {
+        drawSquare(0.6, 0.6, 0.6);
+    }
     glPopMatrix();
 
     /* First side rectangle */
     glPushMatrix();
     glRotated(90, 1, 0, 0);
-    glScaled(10, 0.5, 1);
+    glScaled(1, 0.5, 1);
     glTranslated(0, .5, .5);
-    drawSquare(0.3, 0.3, 1);
+    if (id % 2 == 0)
+    {
+        drawSquare(0.3, 0.3, 1);
+    }
+    else
+    {
+        drawSquare(0.3, 0.3, 0.6);
+    }
     glPopMatrix();
 
     /* Second side rectangle*/
     glPushMatrix();
     glRotated(90, 1, 0, 0);
-    glScaled(10, 0.5, 1);
+    glScaled(1, 0.5, 1);
     glTranslated(0, 0.5, -.5);
-    drawSquare(0.3, 0.3, 1);
+    if (id % 2 == 0)
+    {
+        drawSquare(0.3, 0.3, 1);
+    }
+    else
+    {
+        drawSquare(0.3, 0.3, 0.6);
+    }
     glPopMatrix();
+
     glPopMatrix();
+}
+
+/* Draw the whole corridor in the scene*/
+void drawCorridor()
+{
+    for (int i = racket_pos; i > racket_pos - nb_section; i--)
+    {
+        drawSection(i);
+    }
 }
 
 /* Draw the x, y, z axis */

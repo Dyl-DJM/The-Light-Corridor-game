@@ -102,7 +102,7 @@ void movedCursor(GLFWwindow *window, double x, double y)
 	mouse.x = x; /* largeur;*/
 	mouse.y = y; /*/ hauteur;*/
 
-	printf("Mouse coords : %f - %f\n", mouse.x, mouse.y);
+	// printf("Mouse coords : %f - %f\n", mouse.x, mouse.y);
 }
 
 int main(int argc, char **argv)

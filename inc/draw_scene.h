@@ -17,4 +17,6 @@ void drawRacket(double center_x, double center_y, double size);
 
 void drawBall();
 
+void drawSection(int id);
+
 void drawCorridor();

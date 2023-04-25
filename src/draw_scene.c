@@ -13,6 +13,11 @@
 
 int nb_section = 7;
 
+
+Coords thrownBall;
+
+
+
 void drawOrigin()
 {
     glBegin(GL_LINES);
@@ -68,7 +73,7 @@ void drawRacket(double center_x, double center_y, double size)
 
     glPushMatrix();
     glColor3d(1, 1, 1);
-    glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y);
+    glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y); // z, x, y
     glRotated(90, 0, 1, 0);
     drawSquareForm(size);
     glPopMatrix();
@@ -77,7 +82,10 @@ void drawRacket(double center_x, double center_y, double size)
 /*Draw the ball in the scene*/
 void drawBall()
 {
-    drawColoredSphere();
+    glPushMatrix();
+        glTranslated(0, thrownBall.x, thrownBall.y - 0.25);
+        drawColoredSphere();
+    glPopMatrix();
 }
 
 
@@ -109,6 +117,9 @@ void drawBallWithRacket(double x, double y)
         glTranslated(0, ball_pos_x, ball_pos_y - 0.25);
         drawColoredSphere();
     glPopMatrix();
+
+    thrownBall.x = ball_pos_x;
+    thrownBall.y = ball_pos_y;
    
 }
 

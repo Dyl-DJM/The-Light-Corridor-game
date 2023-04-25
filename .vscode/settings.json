@@ -6,6 +6,9 @@
         "types.h": "c",
         "math.h": "c",
         "obstacle.h": "c",
-        "random": "c"
+        "random": "c",
+        "__hash_table": "c",
+        "__tree": "c",
+        "algorithm": "c"
     }
 }

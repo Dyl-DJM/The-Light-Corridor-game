@@ -3,39 +3,18 @@
 #include <stdlib.h>
 
 
-typedef struct Obstacle Obstacle;
-struct Obstacle
-{
-    RectanglePoints obs;
-    double z;
-    Obstacle *next_obs; /* Points on the next obstacle */
-};
 
 
-typedef struct ObstacleList ObstacleList;
-struct ObstacleList
-{
-    Obstacle *first_obs;   /* Points on the first obstacle */
-};
-
-
-
-
-
-ObstacleList *initObstacleList(RectanglePoints coords, double z)
+ObstacleList *initObstacleList()
 {
     ObstacleList *list = malloc(sizeof(*list));
-    Obstacle *obs = malloc(sizeof(*obs));
 
-    if (list == NULL || obs == NULL)
+    if (list == NULL)
     {
         return NULL;
     }
 
-    obs->obs = coords;
-    obs->z = z;
-    obs->next_obs = NULL;
-    list->first_obs = obs;
+    list->first_obs = NULL;
     
     return list;
 }
@@ -46,9 +25,10 @@ void printList(ObstacleList list)
 {
     Obstacle *obstacle = list.first_obs;
 
+    printf("\n\n=== LIST ===\n");
     while (obstacle != NULL)
     {
-        /*print(obstacle->obs);*/
+        print(obstacle->obs);
         printf("%f\n", obstacle->z);
         obstacle = obstacle->next_obs;
     }
@@ -56,6 +36,7 @@ void printList(ObstacleList list)
 }
 
 
+/* NE MARCHE PAS POUR LE PREMIER ELEMENT À CORRIGER*/
 void removeObs(ObstacleList *list, double z)
 {
     if (list == NULL)
@@ -67,9 +48,9 @@ void removeObs(ObstacleList *list, double z)
 
     while(obstacle != NULL){
         Obstacle * danglingElem = obstacle->next_obs;
-        while(danglingElem != NULL && danglingElem->z > z){ /* Supression*/
-            Obstacle * remove = obstacle->next_obs;
-            danglingElem= danglingElem->next_obs;
+        while(danglingElem != NULL && danglingElem->z < z){ /* Supression*/
+            Obstacle * remove = danglingElem;
+            danglingElem = danglingElem->next_obs;
             free(remove);
         }
         obstacle->next_obs = danglingElem;

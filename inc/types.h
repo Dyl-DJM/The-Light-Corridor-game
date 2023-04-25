@@ -1,6 +1,25 @@
 #pragma once
 
-#include "../src/types.c"
+#include <stdio.h>
+
+typedef struct Coords {
+    double x;
+    double y;
+} Coords;
+
+
+/*
+a ----- b
+|       |
+|       |
+c ----- d
+*/
+typedef struct RectanglePoints {
+    Coords a;
+    Coords b;
+    Coords c;
+    Coords d;
+} RectanglePoints;
 
 typedef enum {
     MOVING = 0,
@@ -14,7 +33,4 @@ typedef struct Coords3D {
     double z;
 } Coords3D;
 
-
-/*RectanglePoints;*/
-
-/*void print(RectanglePoints points);*/
+void print(RectanglePoints points);

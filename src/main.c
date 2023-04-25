@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 		if(ball_state == MOVING){
 			move_ball();
 		}
-		if(racket_state == MOVING){ /* The racket is moving forward (doesn't matters the lateral moving)*/
+		if(racket_state == MOVING && ball_state == MOVING){ /* The racket is moving forward (doesn't matters the lateral moving)*/
 			move_racket();
 		}
 	}

@@ -160,22 +160,32 @@ void drawWall(int section, int pos)
 {
     float wall_pos_x = 0;
     float wall_pos_y = 0.25;
-    float wall_width = 1;
-    float wall_heigth = 0.5;
+    float wall_width = 0;
+    float wall_heigth = 0;
     switch (pos)
     {
     case 0:
         wall_heigth = 0.25;
+        wall_width = 1;
         wall_pos_y = 0.375;
+        break;
     case 1:
         wall_heigth = 0.25;
+        wall_width = 1;
         wall_pos_y = 0.125;
+        break;
     case 2:
+        wall_heigth = 0.5;
         wall_width = 0.5;
         wall_pos_x = -0.25;
+        wall_pos_y = 0.25;
+        break;
     case 3:
+        wall_heigth = 0.5;
         wall_width = 0.5;
         wall_pos_x = 0.25;
+        wall_pos_y = 0.25;
+        break;
     }
     glPushMatrix();
     glTranslated(4 - section + 0.5, wall_pos_x, wall_pos_y);
@@ -188,13 +198,16 @@ void drawWall(int section, int pos)
 /* Draw the x, y, z axis */
 void drawFrame()
 {
+    // drawOrigin();
     drawCorridor();
 
-    // Wall tests
-    // drawWall(3, 0);
-    // drawWall(3, 1);
-    // drawWall(3, 2);
-    // drawWall(3, 3);
+    // drawWall tests
+    /*
+    drawWall(3, 0);
+    drawWall(6, 1);
+    drawWall(9, 2);
+    drawWall(12, 3);
+    */
 
     drawBall();
 }

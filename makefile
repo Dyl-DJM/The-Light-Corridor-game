@@ -13,8 +13,13 @@ OBJDIR	= obj/
 OBJ_TOOLS = $(OBJDIR)3D_tools.o
 
 # Main module
-OBJ_MAIN= $(OBJ_TOOLS) $(OBJDIR)animation.o $(OBJDIR)draw_scene.o $(OBJDIR)types.o $(OBJDIR)main.o 
+OBJ_MAIN= $(OBJ_TOOLS) $(OBJDIR)animation.o $(OBJDIR)draw_scene.o $(OBJDIR)types.o $(OBJDIR)obstacle.o $(OBJDIR)main.o 
 EXEC_MAIN= $(BINDIR)tlc
+
+
+# Test module
+OBJ_TEST= $(OBJDIR)types.o $(OBJDIR)obstacle.o $(OBJDIR)test.o 
+EXEC_TEST= $(BINDIR)test
 
 
 all : $(EXEC_MAIN)
@@ -22,6 +27,13 @@ all : $(EXEC_MAIN)
 
 $(EXEC_MAIN) : $(OBJ_MAIN)
 	$(CC) $(CFLAGS) $(OBJ_MAIN) -o $(EXEC_MAIN) $(LDFLAGS)
+
+
+
+test : $(OBJ_TEST)
+	$(CC) $(CFLAGS) $(OBJ_TEST) -o $(EXEC_TEST) $(LDFLAGS)
+
+
 
 clean :
 	rm -f *.o

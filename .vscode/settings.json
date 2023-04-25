@@ -4,6 +4,8 @@
         "draw_scene.h": "c",
         "animation.h": "c",
         "types.h": "c",
-        "math.h": "c"
+        "math.h": "c",
+        "obstacle.h": "c",
+        "random": "c"
     }
 }

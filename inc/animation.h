@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "../inc/3D_tools.h"
+#include "../inc/obstacle.h"
 
 void move_ball();
 void move_racket();

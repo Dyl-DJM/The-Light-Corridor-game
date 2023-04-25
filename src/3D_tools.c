@@ -3,7 +3,7 @@
 /* Camera parameters and functions */
 float theta = 0;		// Angle between x axis and viewpoint
 float phy = 88.0f;		// Angle between z axis and viewpoint
-float dist_zoom = 7.0f; // Distance between origin and viewpoint
+float dist_zoom = 6.0f; // Distance between origin and viewpoint
 
 /* Objects position*/
 float racket_pos = -2.0f; // Position of the racket

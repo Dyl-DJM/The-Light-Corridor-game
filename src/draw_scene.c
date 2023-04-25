@@ -35,7 +35,7 @@ void drawColoredSphere()
     glColor3d(1, .2, .2);
     glPushMatrix();
     glTranslated(5 + ball_pos, 0, .25);
-    glScaled(0.1, 0.1, 0.1);
+    glScaled(0.05, 0.05, 0.05);
 
     drawSphere();
     glPopMatrix();
@@ -43,9 +43,30 @@ void drawColoredSphere()
 
 void drawRacket(double center_x, double center_y, double size)
 {
+    float racket_pos_y = 0.25;
+    racket_pos_y -= (0.14 * (((-500) + center_y) / 150));
+    if (racket_pos_y > 0.39)
+    {
+        racket_pos_y = 0.39;
+    }
+    if (racket_pos_y < 0.11)
+    {
+        racket_pos_y = 0.11;
+    }
+
+    float racket_pos_x = (0.4 * (((-500) + center_x) / 300));
+    if (racket_pos_x > 0.39)
+    {
+        racket_pos_x = 0.39;
+    }
+    if (racket_pos_x < -0.39)
+    {
+        racket_pos_x = -0.39;
+    }
+
     glPushMatrix();
     glColor3d(1, 1, 1);
-    glTranslated(5 + racket_pos, 0, 0.2);
+    glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y);
     glRotated(90, 0, 1, 0);
     drawSquareForm(size);
     glPopMatrix();

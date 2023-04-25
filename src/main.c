@@ -14,7 +14,7 @@
 
 /* Window properties */
 static const unsigned int WINDOW_WIDTH = 1000;
-static const unsigned int WINDOW_HEIGHT = 1000;
+static const unsigned int WINDOW_HEIGHT = 700;
 static const char WINDOW_TITLE[] = "The Light Corridor";
 static float aspectRatio = 1.0;
 
@@ -25,7 +25,7 @@ static const double FRAMERATE_IN_SECONDS = 1. / 30.;
 Coords mouse;
 
 /* Racket size */
-double racket_size = 0.15;
+double racket_size = 0.1;
 
 /* Error handling function */
 void onError(int error, const char *description)

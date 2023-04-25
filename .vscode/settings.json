@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "3d_tools.h": "c",
-        "draw_scene.h": "c"
+        "draw_scene.h": "c",
+        "animation.h": "c",
+        "types.h": "c",
+        "math.h": "c"
     }
 }

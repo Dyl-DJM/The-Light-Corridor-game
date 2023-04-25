@@ -12,7 +12,7 @@
 
 void drawOrigin();
 
-void drawFrame();
+void drawFrame(double x, double y, double racket_size, MovingState ball_state);
 
 void drawRacket(double center_x, double center_y, double size);
 

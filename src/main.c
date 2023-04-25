@@ -121,9 +121,7 @@ void mouseButton(GLFWwindow* window, int button, int action, int mods)
 		ball_state = MOVING;
 	}
     else if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-		// Make the racket go forward
-		printf("Racket goes forward");
-		racket_state = MOVING;
+		racket_state = racket_state == MOVING ? STOP : MOVING; // to debug
 	}
 }
 
@@ -188,10 +186,7 @@ int main(int argc, char **argv)
 		glPopMatrix();
 
 		/* Scene rendering */
-		drawFrame(ball_state, racket_state);
-
-		/* Draw the racket */
-		drawRacket(mouse.x, mouse.y, racket_size);
+		drawFrame(mouse.x, mouse.y, racket_size, ball_state);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -211,7 +206,6 @@ int main(int argc, char **argv)
 		if(ball_state == MOVING){
 			move_ball();
 		}
-
 		if(racket_state == MOVING){ /* The racket is moving forward (doesn't matters the lateral moving)*/
 			move_racket();
 		}

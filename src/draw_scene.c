@@ -36,7 +36,7 @@ void drawColoredSphere()
 {
     glColor3d(1, .2, .2);
     glPushMatrix();
-        glTranslated(5 + ball_pos, 0, .25);
+        glTranslated(4.95 + ball_pos, 0, .25);
         glScaled(0.05, 0.05, 0.05);
 
         drawSphere();
@@ -46,7 +46,7 @@ void drawColoredSphere()
 void drawRacket(double center_x, double center_y, double size)
 {
     float racket_pos_y = 0.25;
-    racket_pos_y -= (0.14 * (((-500) + center_y) / 150));
+    racket_pos_y -= (0.14 * (((-500) + center_y * 1.25) / 150));
     if (racket_pos_y > 0.39)
     {
         racket_pos_y = 0.39;
@@ -78,6 +78,38 @@ void drawRacket(double center_x, double center_y, double size)
 void drawBall()
 {
     drawColoredSphere();
+}
+
+
+/*Draw the ball in the scene*/
+void drawBallWithRacket(double x, double y)
+{
+    float ball_pos_y = 0.25;
+    ball_pos_y -= (0.14 * (((-500) + y * 1.25) / 150));
+    if (ball_pos_y > 0.39)
+    {
+        ball_pos_y = 0.39;
+    }
+    if (ball_pos_y < 0.11)
+    {
+        ball_pos_y = 0.11;
+    }
+
+    float ball_pos_x = (0.4 * (((-500) + x) / 300));
+    if (ball_pos_x > 0.39)
+    {
+        ball_pos_x = 0.39;
+    }
+    if (ball_pos_x < -0.39)
+    {
+        ball_pos_x = -0.39;
+    }
+
+    glPushMatrix();
+        glTranslated(0, ball_pos_x, ball_pos_y - 0.25);
+        drawColoredSphere();
+    glPopMatrix();
+   
 }
 
 void drawSection(int id)
@@ -196,7 +228,7 @@ void drawWall(int section, int pos)
 }
 
 /* Draw the x, y, z axis */
-void drawFrame()
+void drawFrame(double x, double y, double racket_size, MovingState ball_state)
 {
     // drawOrigin();
     drawCorridor();
@@ -209,5 +241,13 @@ void drawFrame()
     drawWall(12, 3);
     */
 
-    drawBall();
+    /* Draw the racket */
+    drawRacket(x, y, racket_size);
+
+    if(ball_state == MOVING){
+        drawBall();
+    }else{
+        drawBallWithRacket(x, y);
+    }
+    
 }

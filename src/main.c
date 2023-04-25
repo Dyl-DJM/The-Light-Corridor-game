@@ -24,6 +24,13 @@ static const double FRAMERATE_IN_SECONDS = 1. / 30.;
 /* Mouse coords */
 Coords mouse;
 
+/* Ball state */
+MovingState ball_state = STOP; // The ball isn't moving at the beginning, it just follows the racket
+
+/* Racket state */
+MovingState racket_state = STOP; // The ball isn't moving at the beginning, it just follows the racket
+
+
 /* Racket size */
 double racket_size = 0.1;
 
@@ -92,17 +99,32 @@ void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 	}
 }
 
+
+
 /* The mouse now has new coords*/
 void movedCursor(GLFWwindow *window, double x, double y)
 {
 	/*int hauteur, largeur;
-
 	glfwGetWindowSize(window, &largeur, &hauteur);*/
 
 	mouse.x = x; /* largeur;*/
 	mouse.y = y; /*/ hauteur;*/
 
 	// printf("Mouse coords : %f - %f\n", mouse.x, mouse.y);
+}
+
+
+/* Handles the right and left mouse buttons */
+void mouseButton(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
+		ball_state = MOVING;
+	}
+    else if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+		// Make the racket go forward
+		printf("Racket goes forward");
+		racket_state = MOVING;
+	}
 }
 
 int main(int argc, char **argv)
@@ -131,6 +153,7 @@ int main(int argc, char **argv)
 	glfwSetWindowSizeCallback(window, onWindowResized); /* Window resize */
 	glfwSetKeyCallback(window, onKey);					/* Key pressed */
 	glfwSetCursorPosCallback(window, movedCursor);		/* Mouse moved */
+	glfwSetMouseButtonCallback(window, mouseButton); /* Mouse click event */
 
 	onWindowResized(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -165,7 +188,7 @@ int main(int argc, char **argv)
 		glPopMatrix();
 
 		/* Scene rendering */
-		drawFrame();
+		drawFrame(ball_state, racket_state);
 
 		/* Draw the racket */
 		drawRacket(mouse.x, mouse.y, racket_size);
@@ -185,8 +208,13 @@ int main(int argc, char **argv)
 		}
 
 		/* Animate scenery */
-		move_ball();
-		move_racket();
+		if(ball_state == MOVING){
+			move_ball();
+		}
+
+		if(racket_state == MOVING){ /* The racket is moving forward (doesn't matters the lateral moving)*/
+			move_racket();
+		}
 	}
 
 	glfwTerminate();

@@ -8,6 +8,7 @@
 
 #include "3D_tools.h"
 #include "animation.h"
+#include "types.h"
 
 void drawOrigin();
 

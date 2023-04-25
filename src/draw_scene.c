@@ -36,10 +36,10 @@ void drawColoredSphere()
 {
     glColor3d(1, .2, .2);
     glPushMatrix();
-    glTranslated(5 + ball_pos, 0, .25);
-    glScaled(0.05, 0.05, 0.05);
+        glTranslated(5 + ball_pos, 0, .25);
+        glScaled(0.05, 0.05, 0.05);
 
-    drawSphere();
+        drawSphere();
     glPopMatrix();
 }
 

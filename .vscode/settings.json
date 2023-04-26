@@ -9,6 +9,10 @@
         "random": "c",
         "__hash_table": "c",
         "__tree": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "ios": "cpp",
+        "stdio.h": "c",
+        "stdlib.h": "c",
+        "jeu.h": "c"
     }
 }

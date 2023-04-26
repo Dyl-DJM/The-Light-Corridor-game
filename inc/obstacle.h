@@ -29,3 +29,5 @@ void removeObs(ObstacleList *list, double racket_pos);
 void add(ObstacleList *list, RectanglePoints coords, double section);
 
 void addRandomObstacle(ObstacleList *list, double ball_pos);
+
+int squareInObstacle(Obstacle obstacle, RectanglePoints rect);

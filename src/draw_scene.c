@@ -45,7 +45,7 @@ void drawColoredSphere()
     glPopMatrix();
 }
 
-void drawRacket(double center_x, double center_y, double size)
+void drawRacket(double center_x, double center_y, double size, RectanglePoints * racket_points)
 {
     float racket_pos_y = 0.25;
     racket_pos_y -= (0.14 * (((-500) + center_y * 1.25) / 150));
@@ -68,9 +68,17 @@ void drawRacket(double center_x, double center_y, double size)
         racket_pos_x = -0.39;
     }
 
+    double centre_x = racket_pos_x + 0.5;
+    double centre_y = racket_pos_y;
+
+    Coords point1 = initCoords(centre_x - 0.1, centre_y - 0.1); // point bas gauche de la raquette
+    Coords point2 = initCoords(centre_x + 0.1, centre_y + 0.1); // point haut droit de la raquette
+
+    *racket_points = initRect(point1, point2);
+
     glPushMatrix();
     glColor3d(1, 1, 1);
-    glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y); // z, x, y
+    glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y); // (z, x, y)
     glRotated(90, 0, 1, 0);
     drawSquareForm(size);
     glPopMatrix();
@@ -224,7 +232,7 @@ void drawObstacles(ObstacleList list)
 }
 
 /* Draw the x, y, z axis */
-void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles)
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints * racket_points)
 {
     // drawOrigin();
     drawCorridor();
@@ -241,7 +249,7 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
     drawObstacles(obstacles);
 
     /* Draw the racket */
-    drawRacket(x, y, racket_size);
+    drawRacket(x, y, racket_size, racket_points);
 
     if (ball_state == MOVING)
     {

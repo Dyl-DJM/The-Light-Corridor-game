@@ -142,3 +142,36 @@ void addRandomObstacle(ObstacleList *list, double ball_pos)
         add(list, rect, z);
     }
 }
+
+
+
+int squareInObstacle(Obstacle obstacle, RectanglePoints rect){
+
+    print(obstacle.rect);
+    print(rect);
+
+    if(obstacle.rect.a.x <= rect.a.x && rect.a.x <= obstacle.rect.d.x){
+        if(obstacle.rect.a.y <= rect.a.y && rect.a.y <= obstacle.rect.d.y){
+            return 1;
+        }
+    }
+
+    if(obstacle.rect.a.x <= rect.b.x && rect.b.x <= obstacle.rect.d.x){
+        if(obstacle.rect.a.y <= rect.b.y && rect.b.y <= obstacle.rect.d.y){
+            return 1;
+        }
+    }
+
+    if(obstacle.rect.a.x <= rect.c.x && rect.c.x <= obstacle.rect.d.x){
+        if(obstacle.rect.a.y <= rect.c.y && rect.c.y <= obstacle.rect.d.y){
+            return 1;
+        }
+    }
+
+    if(obstacle.rect.a.x <= rect.d.x && rect.d.x <= obstacle.rect.d.x){
+        if(obstacle.rect.a.y <= rect.d.y  && rect.d.y <= obstacle.rect.d.y){
+            return 1;
+        }
+    }
+    return 0;
+}

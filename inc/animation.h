@@ -9,5 +9,5 @@
 #include "../inc/3D_tools.h"
 #include "../inc/obstacle.h"
 
-void move_ball();
-void move_racket();
+void move_ball(ObstacleList * obstacles);
+void move_racket(ObstacleList * obstacles, RectanglePoints racket_form);

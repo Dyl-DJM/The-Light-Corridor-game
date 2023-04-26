@@ -13,9 +13,9 @@
 
 void drawOrigin();
 
-void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles);
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints * racket_points);
 
-void drawRacket(double center_x, double center_y, double size);
+/*void drawRacket(double center_x, double center_y, double size);*/
 
 void drawBall();
 

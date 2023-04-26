@@ -160,6 +160,9 @@ int main(int argc, char **argv)
 	/* Obstacles */
 	ObstacleList *obstacles = initObstacleList();
 
+	/* Racket points */
+	RectanglePoints racket_points = initRect(initCoords(0, 0), initCoords(0, 0));
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -188,7 +191,7 @@ int main(int argc, char **argv)
 		glPopMatrix();
 
 		/* Scene rendering */
-		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles);
+		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -207,11 +210,11 @@ int main(int argc, char **argv)
 		/* Animate scenery */
 		if (ball_state == MOVING)
 		{
-			move_ball();
+			move_ball(obstacles);
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/
-			move_racket();
+			move_racket(obstacles, racket_points);
 		}
 
 		/* Update Obstacles*/

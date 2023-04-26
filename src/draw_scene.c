@@ -13,10 +13,7 @@
 
 int nb_section = 7;
 
-
 Coords thrownBall;
-
-
 
 void drawOrigin()
 {
@@ -41,10 +38,10 @@ void drawColoredSphere()
 {
     glColor3d(1, .2, .2);
     glPushMatrix();
-        glTranslated(4.95 + ball_pos, 0, .25);
-        glScaled(0.05, 0.05, 0.05);
+    glTranslated(4.95 + ball_pos, 0, .25);
+    glScaled(0.05, 0.05, 0.05);
 
-        drawSphere();
+    drawSphere();
     glPopMatrix();
 }
 
@@ -83,11 +80,10 @@ void drawRacket(double center_x, double center_y, double size)
 void drawBall()
 {
     glPushMatrix();
-        glTranslated(0, thrownBall.x, thrownBall.y - 0.25);
-        drawColoredSphere();
+    glTranslated(0, thrownBall.x, thrownBall.y - 0.25);
+    drawColoredSphere();
     glPopMatrix();
 }
-
 
 /*Draw the ball in the scene*/
 void drawBallWithRacket(double x, double y)
@@ -114,13 +110,12 @@ void drawBallWithRacket(double x, double y)
     }
 
     glPushMatrix();
-        glTranslated(0, ball_pos_x, ball_pos_y - 0.25);
-        drawColoredSphere();
+    glTranslated(0, ball_pos_x, ball_pos_y - 0.25);
+    drawColoredSphere();
     glPopMatrix();
 
     thrownBall.x = ball_pos_x;
     thrownBall.y = ball_pos_y;
-   
 }
 
 void drawSection(int id)
@@ -194,42 +189,17 @@ void drawCorridor()
     }
 }
 
-/*
-Draw a wall at section depending on pos.
-0 = Up, 1 = Down, 2 = Left, 3 = Right
-
-*/
-void drawWall(int section, int pos)
+void drawObstacle(Obstacle *obstacle)
 {
-    float wall_pos_x = 0;
-    float wall_pos_y = 0.25;
-    float wall_width = 0;
-    float wall_heigth = 0;
-    switch (pos)
-    {
-    case 0:
-        wall_heigth = 0.25;
-        wall_width = 1;
-        wall_pos_y = 0.375;
-        break;
-    case 1:
-        wall_heigth = 0.25;
-        wall_width = 1;
-        wall_pos_y = 0.125;
-        break;
-    case 2:
-        wall_heigth = 0.5;
-        wall_width = 0.5;
-        wall_pos_x = -0.25;
-        wall_pos_y = 0.25;
-        break;
-    case 3:
-        wall_heigth = 0.5;
-        wall_width = 0.5;
-        wall_pos_x = 0.25;
-        wall_pos_y = 0.25;
-        break;
-    }
+    int section = obstacle->section;
+    float wall_width = obstacle->rect.a.x - obstacle->rect.b.x;
+    float wall_heigth = obstacle->rect.a.y - obstacle->rect.c.y;
+
+    float center_x = (obstacle->rect.b.x - obstacle->rect.a.x) / 2 + obstacle->rect.a.x;
+    float center_y = (obstacle->rect.c.y - obstacle->rect.a.y) / 2 + obstacle->rect.a.y;
+    float wall_pos_x = center_x - 0.5;
+    float wall_pos_y = center_y;
+
     glPushMatrix();
     glTranslated(4 - section + 0.5, wall_pos_x, wall_pos_y);
     glScaled(1, wall_width, wall_heigth);
@@ -238,8 +208,23 @@ void drawWall(int section, int pos)
     glPopMatrix();
 }
 
+void drawObstacles(ObstacleList list)
+{
+    Obstacle *obstacle = list.first_obs;
+
+    while (obstacle != NULL)
+    {
+        if (obstacle->section > -racket_pos + 6)
+        {
+            break;
+        };
+        drawObstacle(obstacle);
+        obstacle = obstacle->next_obs;
+    }
+}
+
 /* Draw the x, y, z axis */
-void drawFrame(double x, double y, double racket_size, MovingState ball_state)
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles)
 {
     // drawOrigin();
     drawCorridor();
@@ -252,13 +237,18 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state)
     drawWall(12, 3);
     */
 
+    /* Draw Obstacles*/
+    drawObstacles(obstacles);
+
     /* Draw the racket */
     drawRacket(x, y, racket_size);
 
-    if(ball_state == MOVING){
+    if (ball_state == MOVING)
+    {
         drawBall();
-    }else{
+    }
+    else
+    {
         drawBallWithRacket(x, y);
     }
-    
 }

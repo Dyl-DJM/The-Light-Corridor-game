@@ -2,8 +2,21 @@
 
 #include <stdlib.h>
 
+Obstacle *initObstacle(RectanglePoints rect, double section)
+{
+    Obstacle *tmp = malloc(sizeof(*tmp));
 
+    if (tmp == NULL)
+    {
+        return NULL;
+    }
 
+    tmp->rect = rect;
+    tmp->section = section;
+    tmp->next_obs = NULL;
+
+    return tmp;
+}
 
 ObstacleList *initObstacleList()
 {
@@ -15,11 +28,10 @@ ObstacleList *initObstacleList()
     }
 
     list->first_obs = NULL;
-    
+    list->last_obs = NULL;
+
     return list;
 }
-
-
 
 void printList(ObstacleList list)
 {
@@ -28,16 +40,14 @@ void printList(ObstacleList list)
     printf("\n\n=== LIST ===\n");
     while (obstacle != NULL)
     {
-        print(obstacle->obs);
-        printf("%f\n", obstacle->z);
+        print(obstacle->rect);
+        printf("%f\n", obstacle->section);
         obstacle = obstacle->next_obs;
     }
     printf("NULL\n");
 }
 
-
-/* NE MARCHE PAS POUR LE PREMIER ELEMENT À CORRIGER*/
-void removeObs(ObstacleList *list, double z)
+void removeObs(ObstacleList *list, double racket_pos)
 {
     if (list == NULL)
     {
@@ -45,11 +55,21 @@ void removeObs(ObstacleList *list, double z)
     }
 
     Obstacle *obstacle = list->first_obs;
+    while (obstacle != NULL && obstacle->section < -racket_pos - 2)
+    {
+        // Suppresion
+        Obstacle *remove = obstacle;
+        list->first_obs = obstacle->next_obs;
+        obstacle = obstacle->next_obs;
+        free(remove);
+    }
+    while (obstacle != NULL)
+    {
+        Obstacle *danglingElem = obstacle->next_obs;
 
-    while(obstacle != NULL){
-        Obstacle * danglingElem = obstacle->next_obs;
-        while(danglingElem != NULL && danglingElem->z < z){ /* Supression*/
-            Obstacle * remove = danglingElem;
+        while (danglingElem != NULL && danglingElem->section < -racket_pos - 2)
+        { /* Supression*/
+            Obstacle *remove = danglingElem;
             danglingElem = danglingElem->next_obs;
             free(remove);
         }
@@ -58,22 +78,67 @@ void removeObs(ObstacleList *list, double z)
     }
 }
 
-
-void add(ObstacleList *list, RectanglePoints coords, double z)
+void add(ObstacleList *list, RectanglePoints obs, double section)
 {
-    Obstacle *to_insert = malloc(sizeof(*to_insert));
-    if (list == NULL || to_insert == NULL)
+    Obstacle *to_insert = initObstacle(obs, section);
+    if (list == NULL)
     {
         return;
     }
-    to_insert->obs = coords;
-    to_insert->z = z;
-
-    to_insert->next_obs = list->first_obs;
-    list->first_obs = to_insert;
+    list->last_obs = to_insert;
+    Obstacle *tmp = list->first_obs;
+    if (tmp == NULL)
+    {
+        list->first_obs = to_insert;
+        return;
+    }
+    while (tmp->next_obs != NULL)
+    {
+        tmp = tmp->next_obs;
+    }
+    tmp->next_obs = to_insert;
 }
 
-int isTouchingObstacle(Obstacle obstacle){
+void addRandomObstacle(ObstacleList *list, double ball_pos)
+{
 
-    return 0;
+    if (list->last_obs == NULL || list->last_obs->section <= -ball_pos + 2)
+    {
+        double x1 = 0;
+        double x2 = 0;
+        double y1 = 0;
+        double y2 = 0;
+        srand(time(NULL));
+        int type = rand() % 4;
+        switch (type)
+        {
+        case 0: // UP
+            x1 = 0;
+            y1 = 0;
+            x2 = 1.0;
+            y2 = (double)rand() / (double)(RAND_MAX / 0.1) + 0.15;
+            break;
+        case 1: // DOWN
+            x1 = 0;
+            y1 = (double)rand() / (double)(RAND_MAX / 0.1) + 0.25;
+            x2 = 1.0;
+            y2 = 0.5;
+            break;
+        case 2: // LEFT
+            x1 = 0;
+            y1 = 0;
+            x2 = (double)rand() / (double)(RAND_MAX / 0.2) + 0.3;
+            y2 = 0.5;
+            break;
+        case 3: // RIGHT
+            x1 = (double)rand() / (double)(RAND_MAX / 0.2) + 0.5;
+            y1 = 0;
+            x2 = 1.0;
+            y2 = 0.5;
+            break;
+        }
+        RectanglePoints rect = initRect(initCoords(x1, y1), initCoords(x2, y2));
+        int z = list->last_obs == NULL ? rand() % 3 - ball_pos + 3 : rand() % 3 + (list->last_obs->section) + 3;
+        add(list, rect, z);
+    }
 }

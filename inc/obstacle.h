@@ -1,30 +1,31 @@
 #pragma once
 
+#include <time.h>
 #include "../inc/types.h"
-
-
 
 typedef struct Obstacle Obstacle;
 struct Obstacle
 {
-    RectanglePoints obs;
-    double z;
+    RectanglePoints rect;
+    double section;
     Obstacle *next_obs; /* Points on the next obstacle */
 };
-
 
 typedef struct ObstacleList ObstacleList;
 struct ObstacleList
 {
-    Obstacle *first_obs;   /* Points on the first obstacle */
+    Obstacle *first_obs; /* Points on the first obstacle */
+    Obstacle *last_obs;  /* Points on the last obstacle */
 };
 
-
+Obstacle *initObstacle(RectanglePoints rect, double section);
 
 ObstacleList *initObstacleList();
 
 void printList(ObstacleList list);
 
-void removeObs(ObstacleList *list, double z);
+void removeObs(ObstacleList *list, double racket_pos);
 
-void add(ObstacleList *list, RectanglePoints coords, double z);
+void add(ObstacleList *list, RectanglePoints coords, double section);
+
+void addRandomObstacle(ObstacleList *list, double ball_pos);

@@ -1,41 +1,33 @@
 #include "../inc/obstacle.h"
 
-int main(void){
+int main(void)
+{
 
     ObstacleList *list;
-    RectanglePoints points;
-    RectanglePoints points2;
-
-    points2.a.x = 0; 
-    points2.a.y = 0;
-    points2.b.x = 2; 
-    points2.b.y = 2;
-    points2.c.x = 4; 
-    points2.c.y = 4;
-    points2.d.x = 6; 
-    points2.d.y = 6;
-
-    points.a.x = 0; 
-    points.a.y = 0;
-    points.b.x = 2; 
-    points.b.y = 2;
-    points.c.x = 4; 
-    points.c.y = 4;
-    points.d.x = 6; 
-    points.d.y = 6;
+    RectanglePoints rect = initRect(initCoords(0, 0), initCoords(6, 6));
+    RectanglePoints rect2 = initRect(initCoords(2, 4), initCoords(6, 8));
 
     list = initObstacleList();
 
-    printList(*list); 
+    printList(*list);
 
-    add(list, points, 12);
-    add(list, points, 10);
-    add(list, points, 10);
-    add(list, points2, 20);
+    add(list, rect, 10);
+    add(list, rect, 12);
+    add(list, rect, 15);
+    add(list, rect2, 20);
 
     printList(*list);
 
-    removeObs(list, 15); /* Remove all the obstacles which are positioned behind 15 in z value in the scene*/
+    removeObs(list, -15); /* Remove all the obstacles which are positioned behind 15 in z value in the scene*/
+
+    printList(*list);
+
+    int ball_pos = -19;
+    for (int i = 0; i < 3; i++)
+    {
+        addRandomObstacle(list, ball_pos);
+        ball_pos -= 4;
+    }
 
     printList(*list);
 

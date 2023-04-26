@@ -2,10 +2,10 @@
 
 void move_ball()
 {
-    ball_pos -= 0.06;
+    ball_pos -= 0.08;
 }
 
 void move_racket()
 {
-    racket_pos -= 0.03;
+    racket_pos -= 0.06;
 }

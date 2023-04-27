@@ -88,8 +88,9 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
 
     ball_trans_x *= -1;
     ball_trans_y *= -1;
-    ball_trans_x += ball_speed * distance_center_x;
-    ball_trans_y += ball_speed * distance_center_y;
+    ball_trans_x -= ball_speed * distance_center_x;
+    ball_trans_y -= ball_speed * distance_center_y;
+
     ball_trans_z *= -1;
 }
 

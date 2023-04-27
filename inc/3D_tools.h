@@ -16,7 +16,6 @@ extern float theta;     // Angle between x axis and viewpoint
 extern float phy;       // Angle between z axis and viewpoint
 extern float dist_zoom; // Distance between origin and viewpoint
 extern float racket_pos;
-extern float ball_pos;
 
 void setCamera();
 
@@ -28,6 +27,8 @@ void drawCircle();
 void drawCone();
 
 void drawSphere();
+
+void drawTriangle();
 
 /* Small tools */
 float toRad(float deg);

@@ -10,10 +10,10 @@ typedef struct Coords
 } Coords;
 
 /*
-a ----- b
-|       |
-|       |
 c ----- d
+|       |
+|       |
+a ----- b
 */
 typedef struct RectanglePoints
 {
@@ -36,6 +36,16 @@ typedef struct Coords3D
     double z;
 } Coords3D;
 
+typedef struct Part{
+	Coords coords;
+	double init_y;
+	double r;
+	double g;
+	double b;
+}Part;
+
 Coords initCoords(double x, double y);
+Coords3D initCoords3D(double x, double y, double z);
 RectanglePoints initRect(Coords a, Coords d);
 void print(RectanglePoints points);
+double randRange(double min, double max);

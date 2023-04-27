@@ -7,7 +7,6 @@ float dist_zoom = 6.0f; // Distance between origin and viewpoint
 
 /* Objects position*/
 float racket_pos = -2.0f; // Position of the racket
-float ball_pos = -2.0f;	  // Position of the ball
 
 void setCamera()
 {
@@ -78,4 +77,13 @@ void drawCone()
 void drawSphere()
 {
 	gluSphere(gluNewQuadric(), 1.0, NB_SEG_CIRCLE, NB_SEG_CIRCLE);
+}
+
+
+void drawTriangle(){
+	glBegin(GL_TRIANGLES);
+		glVertex2d(0, 0);
+		glVertex2d(0.5, 0.25);
+		glVertex2d(0, 0.5);
+	glEnd();
 }

@@ -34,18 +34,7 @@ void drawOrigin()
     glEnd();
 }
 
-void drawColoredSphere()
-{
-    glColor3d(1, .2, .2);
-    glPushMatrix();
-    glTranslated(4.95 + ball_pos, 0, .25);
-    glScaled(0.05, 0.05, 0.05);
-
-    drawSphere();
-    glPopMatrix();
-}
-
-void drawRacket(double center_x, double center_y, double size, RectanglePoints * racket_points)
+void drawRacket(double center_x, double center_y, double size, RectanglePoints *racket_points)
 {
     float racket_pos_y = 0.25;
     racket_pos_y -= (0.14 * (((-500) + center_y * 1.25) / 150));
@@ -84,17 +73,19 @@ void drawRacket(double center_x, double center_y, double size, RectanglePoints *
     glPopMatrix();
 }
 
-/*Draw the ball in the scene*/
-void drawBall()
+void drawBall(Coords3D *ball)
 {
+    glColor3d(1, .2, .2);
     glPushMatrix();
-    glTranslated(0, thrownBall.x, thrownBall.y - 0.25);
-    drawColoredSphere();
+    glTranslated(4.95 + ball->z, ball->x - 0.5, ball->y);
+    glScaled(0.05, 0.05, 0.05);
+
+    drawSphere();
     glPopMatrix();
 }
 
 /*Draw the ball in the scene*/
-void drawBallWithRacket(double x, double y)
+void drawBallWithRacket(double x, double y, Coords3D *ball)
 {
     float ball_pos_y = 0.25;
     ball_pos_y -= (0.14 * (((-500) + y * 1.25) / 150));
@@ -117,19 +108,18 @@ void drawBallWithRacket(double x, double y)
         ball_pos_x = -0.39;
     }
 
-    glPushMatrix();
-    glTranslated(0, ball_pos_x, ball_pos_y - 0.25);
-    drawColoredSphere();
-    glPopMatrix();
+    ball->x = ball_pos_x + 0.5;
+    ball->y = ball_pos_y;
 
-    thrownBall.x = ball_pos_x;
-    thrownBall.y = ball_pos_y;
+    glPushMatrix();
+    drawBall(ball);
+    glPopMatrix();
 }
 
 void drawSection(int id)
 {
     glPushMatrix();
-    glTranslated(id + nb_section - 1, 0, 0);
+    glTranslated(id + nb_section - 0.5, 0, 0);
 
     /* High and low rectangles */
     glPushMatrix();
@@ -209,7 +199,7 @@ void drawObstacle(Obstacle *obstacle)
     float wall_pos_y = center_y;
 
     glPushMatrix();
-    glTranslated(4 - section + 0.5, wall_pos_x, wall_pos_y);
+    glTranslated(5 - section, wall_pos_x, wall_pos_y);
     glScaled(1, wall_width, wall_heigth);
     glRotated(90, 0, 1, 0);
     drawSquare(0, 1.0, 0);
@@ -232,7 +222,7 @@ void drawObstacles(ObstacleList list)
 }
 
 /* Draw the x, y, z axis */
-void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints * racket_points)
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball)
 {
     // drawOrigin();
     drawCorridor();
@@ -253,10 +243,10 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
 
     if (ball_state == MOVING)
     {
-        drawBall();
+        drawBall(ball);
     }
     else
     {
-        drawBallWithRacket(x, y);
+        drawBallWithRacket(x, y, ball);
     }
 }

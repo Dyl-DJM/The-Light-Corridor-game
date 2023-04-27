@@ -25,7 +25,6 @@ void onWindowResizedGame(GLFWwindow *window, int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-
 void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	if (action == GLFW_PRESS)
@@ -100,9 +99,8 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods)
 	}
 }
 
-
-
-int launchGame(){
+int launchGame()
+{
 
 	/* GLFW initialisation */
 	GLFWwindow *window;
@@ -126,9 +124,9 @@ int launchGame(){
 
 	/* Callback events */
 	glfwSetWindowSizeCallback(window, onWindowResizedGame); /* Window resize */
-	glfwSetKeyCallback(window, onKey);					/* Key pressed */
-	glfwSetCursorPosCallback(window, movedCursor);		/* Mouse moved */
-	glfwSetMouseButtonCallback(window, mouseButton);	/* Mouse click event */
+	glfwSetKeyCallback(window, onKey);						/* Key pressed */
+	glfwSetCursorPosCallback(window, movedCursor);			/* Mouse moved */
+	glfwSetMouseButtonCallback(window, mouseButton);		/* Mouse click event */
 
 	onWindowResizedGame(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -140,6 +138,9 @@ int launchGame(){
 
 	/* Racket points */
 	RectanglePoints racket_points = initRect(initCoords(0, 0), initCoords(0, 0));
+
+	/* Ball coords*/
+	Coords3D ball = initCoords3D(0, 0, -2.0);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -169,7 +170,7 @@ int launchGame(){
 		glPopMatrix();
 
 		/* Scene rendering */
-		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points);
+		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points, &ball);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -180,15 +181,16 @@ int launchGame(){
 		/* Elapsed time computation from loop begining */
 		double elapsedTime = glfwGetTime() - startTime;
 		/* If to few time is spend vs our wanted FPS, we wait */
-		if (elapsedTime < FRAMERATE_IN_SECONDS)
+		while (elapsedTime < FRAMERATE_IN_SECONDS)
 		{
 			glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS - elapsedTime);
+			elapsedTime = glfwGetTime() - startTime;
 		}
 
 		/* Animate scenery */
 		if (ball_state == MOVING)
 		{
-			move_ball(obstacles);
+			move_ball(*obstacles, &ball, racket_points, &ball_state);
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/
@@ -196,12 +198,11 @@ int launchGame(){
 		}
 
 		/* Update Obstacles*/
-		addRandomObstacle(obstacles, ball_pos);
+		addRandomObstacle(obstacles, ball.z);
 		removeObs(obstacles, racket_pos);
 	}
 
 	glfwTerminate();
-
 
 	return 0;
 }

@@ -13,11 +13,13 @@
 
 void drawOrigin();
 
-void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints * racket_points);
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball);
 
-/*void drawRacket(double center_x, double center_y, double size);*/
+void drawRacket(double center_x, double center_y, double size, RectanglePoints *racket_points);
 
-void drawBall();
+void drawBall(Coords3D *ball);
+
+void drawBallWithRacket(double x, double y, Coords3D *ball);
 
 void drawSection(int id);
 

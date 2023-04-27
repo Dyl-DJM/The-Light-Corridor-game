@@ -7,8 +7,7 @@
 
 
 int main(int argc, char **argv)
-{
-	
+{	
 	if(launchMenu() == 1){ // The user choosed to play a game
 		switch(launchGame()){
 			case 1 : {	// The user won

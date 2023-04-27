@@ -2,6 +2,7 @@
 
 #include <time.h>
 #include "../inc/types.h"
+#include "3D_tools.h"
 
 typedef struct Obstacle Obstacle;
 struct Obstacle

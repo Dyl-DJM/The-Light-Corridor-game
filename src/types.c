@@ -13,6 +13,19 @@ Coords initCoords(double x, double y)
     return *tmp;
 }
 
+Coords3D initCoords3D(double x, double y, double z)
+{
+    Coords3D *tmp = malloc(sizeof(*tmp));
+    if (tmp == NULL)
+    {
+        return *tmp;
+    }
+    tmp->x = x;
+    tmp->y = y;
+    tmp->z = z;
+    return *tmp;
+}
+
 RectanglePoints initRect(Coords a, Coords d)
 {
     RectanglePoints *tmp = malloc(sizeof(*tmp));

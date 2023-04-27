@@ -112,13 +112,13 @@ void addRandomObstacle(ObstacleList *list, double ball_pos)
         int type = rand() % 4;
         switch (type)
         {
-        case 0: // UP
+        case 0: // DOWN
             x1 = 0;
             y1 = 0;
             x2 = 1.0;
             y2 = (double)rand() / (double)(RAND_MAX / 0.1) + 0.15;
             break;
-        case 1: // DOWN
+        case 1: // UP
             x1 = 0;
             y1 = (double)rand() / (double)(RAND_MAX / 0.1) + 0.25;
             x2 = 1.0;
@@ -143,33 +143,40 @@ void addRandomObstacle(ObstacleList *list, double ball_pos)
     }
 }
 
+int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
+{
 
+    // print(obstacle.rect);
+    // print(rect);
 
-int squareInObstacle(Obstacle obstacle, RectanglePoints rect){
-
-    print(obstacle.rect);
-    print(rect);
-
-    if(obstacle.rect.a.x <= rect.a.x && rect.a.x <= obstacle.rect.d.x){
-        if(obstacle.rect.a.y <= rect.a.y && rect.a.y <= obstacle.rect.d.y){
+    if (obstacle.rect.a.x <= rect.a.x && rect.a.x <= obstacle.rect.d.x)
+    {
+        if (obstacle.rect.a.y <= rect.a.y && rect.a.y <= obstacle.rect.d.y)
+        {
             return 1;
         }
     }
 
-    if(obstacle.rect.a.x <= rect.b.x && rect.b.x <= obstacle.rect.d.x){
-        if(obstacle.rect.a.y <= rect.b.y && rect.b.y <= obstacle.rect.d.y){
+    if (obstacle.rect.a.x <= rect.b.x && rect.b.x <= obstacle.rect.d.x)
+    {
+        if (obstacle.rect.a.y <= rect.b.y && rect.b.y <= obstacle.rect.d.y)
+        {
             return 1;
         }
     }
 
-    if(obstacle.rect.a.x <= rect.c.x && rect.c.x <= obstacle.rect.d.x){
-        if(obstacle.rect.a.y <= rect.c.y && rect.c.y <= obstacle.rect.d.y){
+    if (obstacle.rect.a.x <= rect.c.x && rect.c.x <= obstacle.rect.d.x)
+    {
+        if (obstacle.rect.a.y <= rect.c.y && rect.c.y <= obstacle.rect.d.y)
+        {
             return 1;
         }
     }
 
-    if(obstacle.rect.a.x <= rect.d.x && rect.d.x <= obstacle.rect.d.x){
-        if(obstacle.rect.a.y <= rect.d.y  && rect.d.y <= obstacle.rect.d.y){
+    if (obstacle.rect.a.x <= rect.d.x && rect.d.x <= obstacle.rect.d.x)
+    {
+        if (obstacle.rect.a.y <= rect.d.y && rect.d.y <= obstacle.rect.d.y)
+        {
             return 1;
         }
     }

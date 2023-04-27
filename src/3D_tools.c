@@ -7,7 +7,6 @@ float dist_zoom = 6.0f; // Distance between origin and viewpoint
 
 /* Objects position*/
 float racket_pos = -2.0f; // Position of the racket
-float ball_pos = -2.0f;	  // Position of the ball
 
 void setCamera()
 {

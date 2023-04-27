@@ -181,15 +181,16 @@ int launchGame()
 		/* Elapsed time computation from loop begining */
 		double elapsedTime = glfwGetTime() - startTime;
 		/* If to few time is spend vs our wanted FPS, we wait */
-		if (elapsedTime < FRAMERATE_IN_SECONDS)
+		while (elapsedTime < FRAMERATE_IN_SECONDS)
 		{
 			glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS - elapsedTime);
+			elapsedTime = glfwGetTime() - startTime;
 		}
 
 		/* Animate scenery */
 		if (ball_state == MOVING)
 		{
-			move_ball(*obstacles, &ball, racket_points);
+			move_ball(*obstacles, &ball, racket_points, &ball_state);
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/

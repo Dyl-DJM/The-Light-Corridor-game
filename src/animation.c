@@ -1,10 +1,10 @@
 #include "../inc/animation.h"
 
-double ball_speed = 0.06;
-double racket_speed = 0.03;
+double ball_speed = 0.1;
+double racket_speed = 0.05;
 double ball_trans_x = 0;
 double ball_trans_y = 0;
-double ball_trans_z = -0.06;
+double ball_trans_z = -0.1;
 
 int ballTouchWall(Coords3D ball)
 {
@@ -47,18 +47,33 @@ int ballTouchObstacle(Obstacle obstacle, Coords3D ball)
     return 0;
 }
 
-int ballTouchRacket(RectanglePoints racket_points, Coords3D ball)
+int ballTouchRacket(RectanglePoints racket_points, Coords3D *ball, MovingState *ball_state)
 {
-    if (ball.z <= racket_pos && ball.z >= racket_pos - racket_speed - ball_trans_z && ball_trans_z > 0)
+    if (ball->z <= racket_pos && ball->z >= racket_pos - racket_speed - ball_trans_z && ball_trans_z > 0)
     {
-        if (ball.x + ball_trans_x >= racket_points.a.x - 0.049 && ball.x + ball_trans_x <= racket_points.d.x + 0.049)
+        if (ball->x + ball_trans_x >= racket_points.a.x - 0.049 && ball->x + ball_trans_x <= racket_points.d.x + 0.049)
         {
-            if (ball.y + ball_trans_y >= racket_points.a.y - 0.049 && ball.y + ball_trans_y <= racket_points.d.y + 0.049)
+            if (ball->y + ball_trans_y >= racket_points.a.y - 0.049 && ball->y + ball_trans_y <= racket_points.d.y + 0.049)
             {
-                ballBounceOnRacket(ball, racket_points);
+                ballBounceOnRacket(*ball, racket_points);
+                return 1;
+            }
+            else
+            {
+                setStoppedBall(ball, racket_points, ball_state);
                 return 1;
             }
         }
+        else
+        {
+            setStoppedBall(ball, racket_points, ball_state);
+            return 1;
+        }
+    }
+    if (ball->z > racket_pos && ball_trans_z > 0)
+    {
+        setStoppedBall(ball, racket_points, ball_state);
+        return 1;
     }
     return 0;
 }
@@ -69,7 +84,7 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
     double center_racket_y = racket_points.d.y - ((racket_points.d.y - racket_points.a.y) / 2);
     double distance_center_x = ball.x - center_racket_x;
     double distance_center_y = ball.y - center_racket_y;
-    printf("Distance center x = %f, Distance center y = %f\n", distance_center_x, distance_center_y);
+    // printf("Distance center x = %f, Distance center y = %f\n", distance_center_x, distance_center_y);
 
     ball_trans_x *= -1;
     ball_trans_y *= -1;
@@ -78,16 +93,36 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
     ball_trans_z *= -1;
 }
 
-void collision(ObstacleList obstacles, Coords3D ball, RectanglePoints racket_points)
+void setStoppedBall(Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
+{
+    double center_racket_x = racket_points.d.x - ((racket_points.d.x - racket_points.a.x) / 2);
+    double center_racket_y = racket_points.d.y - ((racket_points.d.y - racket_points.a.y) / 2);
+    ball->x = center_racket_x;
+    ball->y = center_racket_y;
+    ball->z = racket_pos;
+    ball_trans_x = 0;
+    ball_trans_y = 0;
+    ball_trans_z = -ball_speed;
+    *ball_state = STOP;
+    double startTime = glfwGetTime();
+    double elapsedTime = glfwGetTime() - startTime;
+    while (elapsedTime < 1)
+    {
+        glfwWaitEventsTimeout(1 - elapsedTime);
+        elapsedTime = glfwGetTime() - startTime;
+    }
+}
+
+void collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
     // printf("Ball = %f Racket = %f\n", ball.z, racket_pos);
-    if (ballTouchRacket(racket_points, ball))
+    if (ballTouchRacket(racket_points, ball, ball_state))
     {
-        printf("Boing ! Ball = %f Racket = %f\n", ball.z, racket_pos);
+        // printf("Boing ! Ball = %f Racket = %f\n", ball->z, racket_pos);
         return;
     }
 
-    if (ballTouchWall(ball))
+    if (ballTouchWall(*ball))
     {
         // printf("Boing (wall) ! Ball = %f \n", ball.z);
         return;
@@ -98,7 +133,7 @@ void collision(ObstacleList obstacles, Coords3D ball, RectanglePoints racket_poi
     while (obstacle != NULL)
     {
         // printf("Ball = %f Section = %f\n", ball.z, obstacle->section);
-        if (ballTouchObstacle(*obstacle, ball))
+        if (ballTouchObstacle(*obstacle, *ball))
         {
             // printf("Boing ! Ball = %f Section = %f\n", ball.z, obstacle->section);
             break;
@@ -107,12 +142,16 @@ void collision(ObstacleList obstacles, Coords3D ball, RectanglePoints racket_poi
     }
 }
 
-void move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points)
+void move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
-    collision(obstacles, *ball, racket_points);
-    ball->x += ball_trans_x;
-    ball->y += ball_trans_y;
-    ball->z += ball_trans_z;
+
+    collision(obstacles, ball, racket_points, ball_state);
+    if (*ball_state == MOVING)
+    {
+        ball->x += ball_trans_x;
+        ball->y += ball_trans_y;
+        ball->z += ball_trans_z;
+    }
 }
 
 Obstacle *last_obstacle_passed;

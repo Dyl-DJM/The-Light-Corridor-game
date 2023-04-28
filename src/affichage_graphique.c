@@ -1,13 +1,20 @@
 #include "../inc/affichage_graphique.h"
 
+
+/*============================== Variables ==================================*/
+
 static const float GL_VIEW_SIZE = 6.;
 static float aspectRatio = 1.0;
 
 #define AMOUNT_OF_PART 100
 
+/* Static array which stores all the particles of the display */
 Part particules_graphic[AMOUNT_OF_PART];
 
 
+/*============================== Functions ==================================*/
+
+/* Initialize the particles of the array */
 void initPartsGraphic(int win_mode){
 	for(int i = 0; i < AMOUNT_OF_PART; i ++){
 		particules_graphic[i].coords.x = randRange(-5, 5);
@@ -27,8 +34,7 @@ void initPartsGraphic(int win_mode){
 }
 
 
-
-
+/* Makes all the particles of the array move */
 void animPartsGraphic(){
 	for(int i = 0; i < AMOUNT_OF_PART; i ++){
 		if(particules_graphic[i].coords.y <= -3){
@@ -40,7 +46,7 @@ void animPartsGraphic(){
 }
 
 
-
+/* Resize the window in 2D display */
 void onWindowResizedGraphic(GLFWwindow* window, int width, int height)
 {
 	aspectRatio = width / (float) height;
@@ -62,11 +68,10 @@ void onWindowResizedGraphic(GLFWwindow* window, int width, int height)
 		-GL_VIEW_SIZE / 2. / aspectRatio, GL_VIEW_SIZE / 2. / aspectRatio);
 	}
 	glMatrixMode(GL_MODELVIEW);
-
 }
 
 
-
+/* Draw all the particles */
 void drawPartsGraphic(){
 	for(int i = 0; i < AMOUNT_OF_PART; i ++){
 		glPushMatrix();
@@ -82,6 +87,8 @@ void drawPartsGraphic(){
 	}
 }
 
+
+/* Escaping handler */
 void escape(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	if (action == GLFW_PRESS)
@@ -92,17 +99,16 @@ void escape(GLFWwindow *window, int key, int scancode, int action, int mods)
 		case GLFW_KEY_ESCAPE:
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
 			break;
-		default:
-			fprintf(stdout, "Touche non gérée (%d)\n", key);
+		default:{} /* Nothing */
 		}
 	}
 }
 
 
+/* Launches the 2D window */
 int window(int win_or_lose){
 
-    srand(time(NULL)); /* Initializing the seed */
-
+	/* Initialize the array */
 	initPartsGraphic(win_or_lose);
 
 	/* GLFW initialisation */
@@ -126,25 +132,23 @@ int window(int win_or_lose){
 
 	glfwSetWindowSizeCallback(window,onWindowResizedGraphic);
 	onWindowResizedGraphic(window,WINDOW_WIDTH,WINDOW_HEIGHT);
-
-    glfwSetKeyCallback(window, escape);
+    glfwSetKeyCallback(window, escape); /* Escape key */
 
 	glPointSize(4.0);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-
 		/* Get time (in second) at loop beginning */
 		double startTime = glfwGetTime();
 
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
+		/* Draw the main frame */
 		drawPartsGraphic();
 
 		/* Swap front and back buffers */
@@ -161,19 +165,21 @@ int window(int win_or_lose){
 			glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS-elapsedTime);
 		}
 
+		/* Animation scenery */
 		animPartsGraphic();
 	}
 
 	glfwTerminate();
-
     return 0;
 }
 
 
+/* Launches an end window with a win display */
 void launchWinWindow(){
     window(1);
 }
 
+/* Launches an end window with a loose display */
 void launchLooseWindow(){
     window(0);
 }

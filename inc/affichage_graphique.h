@@ -7,6 +7,8 @@
 
 #include <time.h>
 
+/* Launches an end window with a win display */
 void launchWinWindow();
 
+/* Launches an end window with a loose display */
 void launchLooseWindow();

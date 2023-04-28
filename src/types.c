@@ -1,6 +1,8 @@
 
 #include "../inc/types.h"
 
+
+/* Initialize a 2D Coord object with its x and y values */
 Coords initCoords(double x, double y)
 {
     Coords *tmp = malloc(sizeof(*tmp));
@@ -13,6 +15,8 @@ Coords initCoords(double x, double y)
     return *tmp;
 }
 
+
+/* Initialize a 3D Coord object with its x, y and z values */
 Coords3D initCoords3D(double x, double y, double z)
 {
     Coords3D *tmp = malloc(sizeof(*tmp));
@@ -26,6 +30,8 @@ Coords3D initCoords3D(double x, double y, double z)
     return *tmp;
 }
 
+
+/* Initialize a rectangle with two opposite corners */
 RectanglePoints initRect(Coords a, Coords d)
 {
     RectanglePoints *tmp = malloc(sizeof(*tmp));
@@ -40,6 +46,8 @@ RectanglePoints initRect(Coords a, Coords d)
     return *tmp;
 }
 
+
+/* Print the rectangle element informations on the console */
 void print(RectanglePoints points)
 {
     printf("((%f - %f) ; (%f - %f) ; (%f - %f) ; (%f - %f))\n",
@@ -47,7 +55,8 @@ void print(RectanglePoints points)
            points.d.x, points.d.y);
 }
 
-/* This function code is based on : https://stackoverflow.com/questions/33058848/generate-a-random-double-between-1-and-1 */
+
+/* Computes a double in a given range (This function code commes from :  https://stackoverflow.com/questions/33058848/generate-a-random-double-between-1-and-1) */
 double randRange(double min, double max) 
 {
     double range = (max - min); 

@@ -221,9 +221,6 @@ int launchGame()
 		/* Update Obstacles*/
 		addRandomObstacle(obstacles, ball.z, endCorridor() - 3);
 		removeObs(obstacles, racket_pos);
-
-
-		printBonusList(*bonus_list);
 	}
 
 	/* Free the memory resources*/

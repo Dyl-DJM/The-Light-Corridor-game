@@ -184,3 +184,21 @@ int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
     }
     return 0;
 }
+
+
+
+void freeObstacles(ObstacleList * obstacles){ 
+    if(obstacles == NULL){  
+        return;
+    }
+
+    for(Obstacle * current = obstacles->first_obs; current != NULL;){
+        Obstacle * remove = current;
+        current = current->next_obs;
+        free(remove);
+        remove = NULL;
+    }
+
+    free(obstacles);
+    obstacles = NULL;
+}

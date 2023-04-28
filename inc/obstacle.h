@@ -32,3 +32,5 @@ void add(ObstacleList *list, RectanglePoints coords, double section);
 void addRandomObstacle(ObstacleList *list, double ball_pos, double limit);
 
 int squareInObstacle(Obstacle obstacle, RectanglePoints rect);
+
+void freeObstacles(ObstacleList * obstacles); 

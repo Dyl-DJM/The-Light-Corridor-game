@@ -209,6 +209,9 @@ int launchGame()
 		removeObs(obstacles, racket_pos);
 	}
 
+	/* Free the memory resources*/
+	freeObstacles(obstacles);
+
 	glfwTerminate();
 
 	return isAlive() ? (isCorridorEnd(racket_pos) ? 1 : 0) : 2;

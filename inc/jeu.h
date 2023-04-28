@@ -8,7 +8,5 @@
 #include "../inc/regles.h"
 #include "../inc/bonus.h"
 
-
-
-
+/* Launches the window with the 3D scene of the game */
 int launchGame();

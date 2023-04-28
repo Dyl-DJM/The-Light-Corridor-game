@@ -1,5 +1,8 @@
 #include "../inc/jeu.h"
 
+
+/*============================== Variables ==================================*/
+
 static float aspectRatio = 1.0;
 
 /* Mouse coords */
@@ -17,6 +20,11 @@ double racket_size = 0.1;
 /* Bonus */
 Bonus bonus = NONE;	/* At the beginning there is not any bonus */
 
+
+
+/*============================== Functions ==================================*/
+
+/* Resize of the window */
 void onWindowResizedGame(GLFWwindow *window, int width, int height)
 {
 	aspectRatio = width / (float)height;
@@ -28,41 +36,33 @@ void onWindowResizedGame(GLFWwindow *window, int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
+
+/* Key events handling */
 void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	if (action == GLFW_PRESS)
 	{
 		switch (key)
 		{
-		case GLFW_KEY_A:
+		case GLFW_KEY_A: // All the keys
 		case GLFW_KEY_ESCAPE:
 			glfwSetWindowShouldClose(window, GLFW_TRUE);
-			break;
-		case GLFW_KEY_L:
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			break;
-		case GLFW_KEY_P:
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			break;
 		case GLFW_KEY_B:
 			if (dist_zoom < 100.0f)
 				dist_zoom *= 1.1;
-			printf("Zoom is %f\n", dist_zoom);
 			break;
 		case GLFW_KEY_N:
 			if (dist_zoom > 1.0f)
 				dist_zoom *= 0.9;
-			printf("Zoom is %f\n", dist_zoom);
 			break;
 		case GLFW_KEY_UP:
 			if (phy > 2)
 				phy -= 2;
-			printf("Phy %f\n", phy);
 			break;
 		case GLFW_KEY_DOWN:
 			if (phy <= 88.)
 				phy += 2;
-			printf("Phy %f\n", phy);
 			break;
 		case GLFW_KEY_LEFT:
 			theta -= 5;
@@ -70,58 +70,56 @@ void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 		case GLFW_KEY_RIGHT:
 			theta += 5;
 			break;
-		default:
-			fprintf(stdout, "Touche non gérée (%d)\n", key);
+		default:{
+		} // other key unhandled
 		}
 	}
 }
 
-/* The mouse now has new coords*/
+
+/* Handles the movements of the cursor in the window */
 void movedCursor(GLFWwindow *window, double x, double y)
 {
-	/*int hauteur, largeur;
-	glfwGetWindowSize(window, &largeur, &hauteur);*/
-
-	mouse.x = x; /* largeur;*/
-	mouse.y = y; /*/ hauteur;*/
-
-	// printf("Mouse coords : %f - %f\n", mouse.x, mouse.y);
+	/* Update of the current position */
+	mouse.x = x;
+	mouse.y = y; 
 }
+
 
 /* Handles the right and left mouse buttons */
 void mouseButton(GLFWwindow *window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) /* The ball is launched && the bonus is updated (GLUE mode) */
 	{
 		ball_state = MOVING;
 		bonus = NONE;
 	}
-	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) /* The racket moves and stop*/
 	{
-		if(ball_state == STOP){
+		if(ball_state == STOP){ /* The ball hasn't been launched yet, wa cant move the racket */
 			return;
 		}
 		racket_state = racket_state == MOVING ? STOP : MOVING;
 	}
 }
 
+
+/* Launches the window with the 3D scene of the game */
 int launchGame()
 {
-
 	/* GLFW initialisation */
 	GLFWwindow *window;
 	if (!glfwInit())
 		return -1;
 
-	/* Callback to a function if an error is rised by GLFW */
+	/* Error handling */
 	glfwSetErrorCallback(onError);
 
-	/* Create a windowed mode window and its OpenGL context */
+	/* Create a window */
 	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, NULL, NULL);
 	if (!window)
 	{
-		// If no context created : exit !
-		glfwTerminate();
+		glfwTerminate(); /* Error in the window creation */
 		return -1;
 	}
 
@@ -144,13 +142,14 @@ int launchGame()
 
 	/* Bonus */
 	BonusList *bonus_list = initBonusList();
+
+	/* TODO : À retirer, c'est l'ajout manuel d'un seul bonus pour test*/
 	Coords3D bcoords;
     bcoords.x = -1;
     bcoords.y = -1;
     bcoords.z = -2;
     addBonus(bonus_list, bcoords, 2);
-
-	printBonusList(*bonus_list);
+	printBonusList(*bonus_list); /* TODO : Pour débugger */
 
 	/* Racket points */
 	RectanglePoints racket_points = initRect(initCoords(0, 0), initCoords(0, 0));
@@ -176,18 +175,6 @@ int launchGame()
 		glLoadIdentity();
 		setCamera();
 
-		/* Initial scenery setup */
-		glPushMatrix();
-		glTranslatef(0.0, 0.0, -0.01);
-		glScalef(10.0, 10.0, 1.0);
-		glColor3f(0.0, 0.0, 0.1);
-		drawSquare(0, 0, 0);
-		glBegin(GL_POINTS);
-		glColor3f(1.0, 1.0, 0.0);
-		glVertex3f(0.0, 0.0, 0.0);
-		glEnd();
-		glPopMatrix();
-
 		/* Scene rendering */
 		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points, &ball, bonus, *bonus_list);
 
@@ -199,6 +186,7 @@ int launchGame()
 
 		/* Elapsed time computation from loop begining */
 		double elapsedTime = glfwGetTime() - startTime;
+
 		/* If to few time is spend vs our wanted FPS, we wait */
 		while (elapsedTime < FRAMERATE_IN_SECONDS)
 		{
@@ -209,7 +197,7 @@ int launchGame()
 		/* Animate scenery */
 		if (ball_state == MOVING)
 		{	
-			if(move_ball(*obstacles, &ball, racket_points, &ball_state, bonus) == 2){
+			if(move_ball(*obstacles, &ball, racket_points, &ball_state, bonus) == 2){ /* The ball is behind the racket */
 				removeLife();
 			}
 		}

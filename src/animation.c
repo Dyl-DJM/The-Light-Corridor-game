@@ -164,7 +164,7 @@ int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
 
 Obstacle *last_obstacle_passed;
 
-void move_racket(ObstacleList *obstacles, RectanglePoints racket_points)
+void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState * racket_state)
 {
     Obstacle *obstacle = obstacles->first_obs;
     if (-racket_pos <= obstacle->section && obstacle->section < -racket_pos + racket_speed)
@@ -177,6 +177,9 @@ void move_racket(ObstacleList *obstacles, RectanglePoints racket_points)
             return;
         }
     }
+    //*racket_state = STOP;
     racket_pos -= racket_speed;
+
+
     return;
 }

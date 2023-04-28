@@ -17,4 +17,4 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points);
 void setStoppedBall(Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state);
 int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state);
 int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state);
-void move_racket(ObstacleList *obstacles, RectanglePoints racket_form);
+void move_racket(ObstacleList *obstacles, RectanglePoints racket_form, MovingState * racket_state);

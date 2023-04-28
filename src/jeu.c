@@ -88,13 +88,15 @@ void movedCursor(GLFWwindow *window, double x, double y)
 /* Handles the right and left mouse buttons */
 void mouseButton(GLFWwindow *window, int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
 	{
 		ball_state = MOVING;
-		racket_state = MOVING;
 	}
-	else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
+		if(ball_state == STOP){
+			return;
+		}
 		racket_state = racket_state == MOVING ? STOP : MOVING; // to debug
 	}
 }
@@ -196,7 +198,7 @@ int launchGame()
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/
-			move_racket(obstacles, racket_points);
+			move_racket(obstacles, racket_points, &racket_state);
 		}
 
 		/* Update Obstacles*/

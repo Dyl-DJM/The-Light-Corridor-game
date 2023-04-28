@@ -144,8 +144,11 @@ int launchGame()
 	/* Ball coords*/
 	Coords3D ball = initCoords3D(0, 0, -2.0);
 
+	/* Initialze the length of the corridor */
+	initLengthCorridor();
+
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window) && isAlive())
+	while (!glfwWindowShouldClose(window) && isAlive() && !isCorridorEnd(racket_pos))
 	{
 		/* Get time (in second) at loop beginning */
 		double startTime = glfwGetTime();
@@ -191,7 +194,7 @@ int launchGame()
 
 		/* Animate scenery */
 		if (ball_state == MOVING)
-		{
+		{	
 			if(move_ball(*obstacles, &ball, racket_points, &ball_state) == 2){
 				removeLife();
 			}
@@ -202,11 +205,11 @@ int launchGame()
 		}
 
 		/* Update Obstacles*/
-		addRandomObstacle(obstacles, ball.z);
+		addRandomObstacle(obstacles, ball.z, endCorridor() - 3);
 		removeObs(obstacles, racket_pos);
 	}
 
 	glfwTerminate();
 
-	return isAlive() ? 0 : 2;
+	return isAlive() ? (isCorridorEnd(racket_pos) ? 1 : 0) : 2;
 }

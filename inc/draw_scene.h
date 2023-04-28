@@ -10,6 +10,7 @@
 #include "animation.h"
 #include "types.h"
 #include "obstacle.h"
+#include "regles.h"
 
 void drawOrigin();
 

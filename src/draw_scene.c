@@ -183,11 +183,14 @@ void drawCorridor()
 {
     for (int i = racket_pos; i > racket_pos - nb_section; i--)
     {
-        drawSection(i);
+        if(!isCorridorEnd(i)){
+            drawSection(i);
+        }
     }
 }
 
-void drawObstacle(Obstacle *obstacle)
+void 
+drawObstacle(Obstacle *obstacle)
 {
     int section = obstacle->section;
     float wall_width = obstacle->rect.a.x - obstacle->rect.b.x;
@@ -224,6 +227,11 @@ void drawObstacles(ObstacleList list)
 /* Draw the x, y, z axis */
 void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball)
 {
+    if(isCorridorEnd(racket_pos - 2)){
+        drawCorridor();
+        drawRacket(x, y, racket_size, racket_points);
+        return;
+    }
     // drawOrigin();
     drawCorridor();
 
@@ -235,8 +243,10 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
     drawWall(12, 3);
     */
 
+
     /* Draw Obstacles*/
     drawObstacles(obstacles);
+
 
     /* Draw the racket */
     drawRacket(x, y, racket_size, racket_points);

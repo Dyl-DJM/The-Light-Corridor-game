@@ -99,7 +99,7 @@ void add(ObstacleList *list, RectanglePoints obs, double section)
     tmp->next_obs = to_insert;
 }
 
-void addRandomObstacle(ObstacleList *list, double ball_pos)
+void addRandomObstacle(ObstacleList *list, double ball_pos, double limit)
 {
 
     if (list->last_obs == NULL || list->last_obs->section <= -ball_pos + 2)
@@ -139,7 +139,9 @@ void addRandomObstacle(ObstacleList *list, double ball_pos)
         }
         RectanglePoints rect = initRect(initCoords(x1, y1), initCoords(x2, y2));
         int z = list->last_obs == NULL ? rand() % 3 - ball_pos + 3 : rand() % 3 + (list->last_obs->section) + 3;
-        add(list, rect, z);
+        if(z < limit){
+            add(list, rect, z);
+        }
     }
 }
 

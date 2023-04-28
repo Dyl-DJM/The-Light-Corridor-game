@@ -88,8 +88,8 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
 
     ball_trans_x *= -1;
     ball_trans_y *= -1;
-    ball_trans_x -= ball_speed * distance_center_x;
-    ball_trans_y -= ball_speed * distance_center_y;
+    ball_trans_x += ball_speed * distance_center_x;
+    ball_trans_y += ball_speed * distance_center_y;
 
     ball_trans_z *= -1;
 }
@@ -167,7 +167,7 @@ Obstacle *last_obstacle_passed;
 void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState * racket_state)
 {
     Obstacle *obstacle = obstacles->first_obs;
-    if (-racket_pos <= obstacle->section && obstacle->section < -racket_pos + racket_speed)
+    if (obstacle != NULL && -racket_pos <= obstacle->section && obstacle->section < -racket_pos + racket_speed)
     { /*The obstacle is in front of the racket*/
 
         // printf("section = %f, racket_pos = %f\n", obstacle->section, racket_pos);
@@ -177,9 +177,6 @@ void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingS
             return;
         }
     }
-    //*racket_state = STOP;
     racket_pos -= racket_speed;
-
-
     return;
 }

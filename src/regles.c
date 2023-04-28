@@ -1,6 +1,6 @@
 #include "../inc/regles.h"
 
-
+int life_points = 5;
 
 void addLife(){
     life_points ++;
@@ -13,5 +13,5 @@ void removeLife(){
 
 
 int isAlive(){
-    return life_points <= 0;
+    return life_points > 0;
 }

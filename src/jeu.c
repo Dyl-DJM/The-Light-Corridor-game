@@ -143,7 +143,7 @@ int launchGame()
 	Coords3D ball = initCoords3D(0, 0, -2.0);
 
 	/* Loop until the user closes the window */
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(window) && isAlive())
 	{
 		/* Get time (in second) at loop beginning */
 		double startTime = glfwGetTime();
@@ -190,7 +190,9 @@ int launchGame()
 		/* Animate scenery */
 		if (ball_state == MOVING)
 		{
-			move_ball(*obstacles, &ball, racket_points, &ball_state);
+			if(move_ball(*obstacles, &ball, racket_points, &ball_state) == 2){
+				removeLife();
+			}
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/
@@ -204,5 +206,5 @@ int launchGame()
 
 	glfwTerminate();
 
-	return 0;
+	return isAlive() ? 0 : 2;
 }

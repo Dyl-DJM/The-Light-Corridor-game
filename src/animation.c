@@ -61,19 +61,19 @@ int ballTouchRacket(RectanglePoints racket_points, Coords3D *ball, MovingState *
             else
             {
                 setStoppedBall(ball, racket_points, ball_state);
-                return 1;
+                return 2;
             }
         }
         else
         {
             setStoppedBall(ball, racket_points, ball_state);
-            return 1;
+            return 2;
         }
     }
     if (ball->z > racket_pos && ball_trans_z > 0)
     {
         setStoppedBall(ball, racket_points, ball_state);
-        return 1;
+        return 2;
     }
     return 0;
 }
@@ -114,19 +114,21 @@ void setStoppedBall(Coords3D *ball, RectanglePoints racket_points, MovingState *
     }
 }
 
-void collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
+int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
     // printf("Ball = %f Racket = %f\n", ball.z, racket_pos);
-    if (ballTouchRacket(racket_points, ball, ball_state))
+    int value = 0;
+
+    if ((value = ballTouchRacket(racket_points, ball, ball_state)))
     {
         // printf("Boing ! Ball = %f Racket = %f\n", ball->z, racket_pos);
-        return;
+        return value;
     }
 
     if (ballTouchWall(*ball))
     {
         // printf("Boing (wall) ! Ball = %f \n", ball.z);
-        return;
+        return 0;
     }
 
     Obstacle *obstacle = obstacles.first_obs;
@@ -141,18 +143,23 @@ void collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_po
         }
         obstacle = obstacle->next_obs;
     }
+
+    return 0;
 }
 
-void move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
+int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
 
-    collision(obstacles, ball, racket_points, ball_state);
+    int type_of_collision = 0;
+    type_of_collision = collision(obstacles, ball, racket_points, ball_state);
     if (*ball_state == MOVING)
     {
         ball->x += ball_trans_x;
         ball->y += ball_trans_y;
         ball->z += ball_trans_z;
     }
+
+    return type_of_collision;
 }
 
 Obstacle *last_obstacle_passed;

@@ -1,4 +1,5 @@
 #pragma once
 
+int isAlive();
 
-int life_points = 5;
+void removeLife();

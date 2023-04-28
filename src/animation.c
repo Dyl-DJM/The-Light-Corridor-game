@@ -147,7 +147,7 @@ int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
     return 0;
 }
 
-int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
+int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state, Bonus bonus)
 {
 
     int type_of_collision = 0;
@@ -159,12 +159,16 @@ int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
         ball->z += ball_trans_z;
     }
 
+    if(bonus == GLUE){
+        return 1;
+    }
+    
     return type_of_collision;
 }
 
 Obstacle *last_obstacle_passed;
 
-void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState * racket_state)
+void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState * racket_state, Bonus * bonus)
 {
     Obstacle *obstacle = obstacles->first_obs;
     if (obstacle != NULL && -racket_pos <= obstacle->section && obstacle->section < -racket_pos + racket_speed)

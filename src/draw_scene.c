@@ -228,8 +228,34 @@ void drawObstacles(ObstacleList list)
     }
 }
 
+
+
+
+void drawBonus(BonusObject bonus){
+    glPushMatrix();
+        glColor3d(1, 1, 0);
+        glTranslated(0,  0 , 0.25);  // Mettre les bonnes valeurs de coordonnées de bonus
+        glScaled(0.05, 0.05, 0.05);
+        drawSphere();
+    glPopMatrix();
+}
+
+void drawManyBonus(BonusList list){
+    BonusObject *bonus = list.first_bonus;
+
+    while (bonus != NULL)
+    {
+        if (bonus->coords.z > -racket_pos + 6)
+        {
+            break;
+        };
+        drawBonus(*bonus);
+        bonus = bonus->next_bonus;
+    }
+}
+
 /* Draw the x, y, z axis */
-void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball, Bonus bonus)
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball, Bonus bonus, BonusList bonus_list)
 {
     if(isCorridorEnd(racket_pos - 2)){
         drawCorridor();
@@ -251,6 +277,7 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
     /* Draw Obstacles*/
     drawObstacles(obstacles);
 
+    drawManyBonus(bonus_list);
 
     /* Draw the racket */
     drawRacket(x, y, racket_size, racket_points, bonus);

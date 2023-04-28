@@ -1,4 +1,5 @@
 #include "../inc/obstacle.h"
+#include "../inc/bonus.h"
 
 int main(void)
 {
@@ -25,11 +26,35 @@ int main(void)
     int ball_pos = -19;
     for (int i = 0; i < 3; i++)
     {
-        addRandomObstacle(list, ball_pos);
+        addRandomObstacle(list, ball_pos, 1000);
         ball_pos -= 4;
     }
 
     printList(*list);
+
+    printf("\n\n=== Bonus part ===\n\n");
+
+    BonusList * blist = initBonusList();
+
+    printBonusList(*blist);
+
+    Coords3D bcoords;
+    bcoords.x = 10;
+    bcoords.y = 20;
+    bcoords.z = 30;
+    addBonus(blist, bcoords, 10);
+    addBonus(blist, bcoords, 20);
+    addBonus(blist, bcoords, 10);
+    addBonus(blist, bcoords, 10);
+    addBonus(blist, bcoords, 15);
+
+    printBonusList(*blist);
+
+    removeBonus(blist, -100);
+
+    printBonusList(*blist);
+
+
 
     return 0;
 }

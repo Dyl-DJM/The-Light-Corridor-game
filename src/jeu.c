@@ -101,7 +101,7 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods)
 		if(ball_state == STOP){
 			return;
 		}
-		racket_state = racket_state == MOVING ? STOP : MOVING; // to debug
+		racket_state = racket_state == MOVING ? STOP : MOVING;
 	}
 }
 
@@ -142,6 +142,16 @@ int launchGame()
 	/* Obstacles */
 	ObstacleList *obstacles = initObstacleList();
 
+	/* Bonus */
+	BonusList *bonus_list = initBonusList();
+	Coords3D bcoords;
+    bcoords.x = -1;
+    bcoords.y = -1;
+    bcoords.z = -2;
+    addBonus(bonus_list, bcoords, 2);
+
+	printBonusList(*bonus_list);
+
 	/* Racket points */
 	RectanglePoints racket_points = initRect(initCoords(0, 0), initCoords(0, 0));
 
@@ -179,7 +189,7 @@ int launchGame()
 		glPopMatrix();
 
 		/* Scene rendering */
-		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points, &ball, bonus);
+		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points, &ball, bonus, *bonus_list);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
@@ -199,13 +209,13 @@ int launchGame()
 		/* Animate scenery */
 		if (ball_state == MOVING)
 		{	
-			if(move_ball(*obstacles, &ball, racket_points, &ball_state) == 2){
+			if(move_ball(*obstacles, &ball, racket_points, &ball_state, bonus) == 2){
 				removeLife();
 			}
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/
-			move_racket(obstacles, racket_points, &racket_state);
+			move_racket(obstacles, racket_points, &racket_state, &bonus);
 		}
 
 		/* Update Obstacles*/
@@ -215,6 +225,7 @@ int launchGame()
 
 	/* Free the memory resources*/
 	freeObstacles(obstacles);
+	freeBonus(bonus_list);
 
 	glfwTerminate();
 

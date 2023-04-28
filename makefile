@@ -18,7 +18,7 @@ EXEC_MAIN= $(BINDIR)tlc
 
 
 # Test module
-OBJ_TEST= $(OBJDIR)types.o $(OBJDIR)obstacle.o $(OBJDIR)test.o 
+OBJ_TEST= $(OBJDIR)types.o $(OBJDIR)obstacle.o $(OBJDIR)bonus.o $(OBJDIR)test.o 
 EXEC_TEST= $(BINDIR)test
 
 

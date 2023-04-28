@@ -215,12 +215,15 @@ int launchGame()
 		}
 		if (racket_state == MOVING && ball_state == MOVING)
 		{ /* The racket is moving forward (doesn't matters the lateral moving)*/
-			move_racket(obstacles, racket_points, &racket_state, &bonus);
+			move_racket(obstacles, racket_points, &racket_state, &bonus, bonus_list);
 		}
 
 		/* Update Obstacles*/
 		addRandomObstacle(obstacles, ball.z, endCorridor() - 3);
 		removeObs(obstacles, racket_pos);
+
+
+		printBonusList(*bonus_list);
 	}
 
 	/* Free the memory resources*/

@@ -5,6 +5,8 @@
 
 int isAlive();
 
+void addLife();
+
 void removeLife();
 
 double endCorridor();

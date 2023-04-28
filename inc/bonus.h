@@ -44,3 +44,5 @@ void addBonus(BonusList *list, Coords3D coords, double radius);
 int squareInBonus(BonusObject bonus, RectanglePoints rect, double section);
 
 void freeBonus(BonusList * list); 
+
+void removeFirst(BonusList * list);

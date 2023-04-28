@@ -66,11 +66,11 @@ void drawRacket(double center_x, double center_y, double size, RectanglePoints *
     *racket_points = initRect(point1, point2);
 
     glPushMatrix();
-    if(bonus == GLUE){
-        glColor3d(1, 0.8, 0); // Bonus coloured of the Glue
-    }else{
-        glColor3d(1, 1, 1);
-    }
+        if(bonus == GLUE){
+            glColor3d(1, 0, 0); // Bonus coloured of the Glue
+        }else{
+            glColor3d(1, 1, 1);
+        }
     glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y); // (z, x, y)
     glRotated(90, 0, 1, 0);
     drawSquareForm(size);

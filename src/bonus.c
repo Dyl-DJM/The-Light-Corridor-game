@@ -150,3 +150,17 @@ void freeBonus(BonusList * list)
     free(list);
     list = NULL;
 }
+
+
+void removeFirst(BonusList * list)
+{
+    if(list == NULL){
+        return;
+    }
+
+    BonusObject * to_remove = list->first_bonus;
+    list->first_bonus = to_remove->next_bonus;
+
+    free(to_remove);
+    to_remove = NULL;
+}

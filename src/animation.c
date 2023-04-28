@@ -159,7 +159,8 @@ int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
         ball->z += ball_trans_z;
     }
 
-    if(bonus == GLUE){
+    if(bonus == GLUE && type_of_collision == 1){ // The racket is in glue mode and the ball touched the racket
+        *ball_state = STOP;
         return 1;
     }
     
@@ -168,9 +169,26 @@ int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
 
 Obstacle *last_obstacle_passed;
 
-void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState * racket_state, Bonus * bonus)
+void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState * racket_state, Bonus * bonus_state, BonusList* bonus_list)
 {
     Obstacle *obstacle = obstacles->first_obs;
+    BonusObject * bonus = bonus_list->first_bonus;
+
+    if(bonus != NULL && squareInBonus(*bonus, racket_points, racket_pos)){ // Hit the bonus item
+        switch(bonus->type){
+            case GLUE : {
+                *bonus_state = GLUE;
+                break;
+            }
+            case LIFE : {
+                addLife();
+                break;
+            }
+            default:{}
+        }
+        removeFirst(bonus_list);
+    }
+
     if (obstacle != NULL && -racket_pos <= obstacle->section && obstacle->section < -racket_pos + racket_speed)
     { /*The obstacle is in front of the racket*/
 

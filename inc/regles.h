@@ -2,6 +2,7 @@
 
 #include "../inc/types.h"
 
+
 int isAlive();
 
 void removeLife();

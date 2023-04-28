@@ -8,7 +8,6 @@ void addLife(){
 }
 
 
-
 void initLengthCorridor(){
     end_corridor = randRange(40, 200);
 }
@@ -30,3 +29,5 @@ double endCorridor(){
 int isCorridorEnd(double racket_pos){
     return -racket_pos >= end_corridor; 
 }
+
+

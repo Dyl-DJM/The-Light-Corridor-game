@@ -6,6 +6,7 @@
 #include "../inc/obstacle.h"
 #include "../inc/draw_scene.h"
 #include "../inc/regles.h"
+#include "../inc/bonus.h"
 
 
 

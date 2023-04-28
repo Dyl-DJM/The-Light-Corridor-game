@@ -14,6 +14,9 @@ MovingState racket_state = STOP; // The ball isn't moving at the beginning, it j
 /* Racket size */
 double racket_size = 0.1;
 
+/* Bonus */
+Bonus bonus = NONE;	/* At the beginning there is not any bonus */
+
 void onWindowResizedGame(GLFWwindow *window, int width, int height)
 {
 	aspectRatio = width / (float)height;
@@ -91,6 +94,7 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
 	{
 		ball_state = MOVING;
+		bonus = NONE;
 	}
 	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
@@ -141,7 +145,7 @@ int launchGame()
 	/* Racket points */
 	RectanglePoints racket_points = initRect(initCoords(0, 0), initCoords(0, 0));
 
-	/* Ball coords*/
+	/* Ball coords */
 	Coords3D ball = initCoords3D(0, 0, -2.0);
 
 	/* Initialze the length of the corridor */
@@ -175,7 +179,7 @@ int launchGame()
 		glPopMatrix();
 
 		/* Scene rendering */
-		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points, &ball);
+		drawFrame(mouse.x, mouse.y, racket_size, ball_state, *obstacles, &racket_points, &ball, bonus);
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);

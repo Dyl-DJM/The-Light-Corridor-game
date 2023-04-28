@@ -34,7 +34,7 @@ void drawOrigin()
     glEnd();
 }
 
-void drawRacket(double center_x, double center_y, double size, RectanglePoints *racket_points)
+void drawRacket(double center_x, double center_y, double size, RectanglePoints *racket_points, Bonus bonus)
 {
     float racket_pos_y = 0.25;
     racket_pos_y -= (0.14 * (((-500) + center_y * 1.25) / 150));
@@ -66,7 +66,11 @@ void drawRacket(double center_x, double center_y, double size, RectanglePoints *
     *racket_points = initRect(point1, point2);
 
     glPushMatrix();
-    glColor3d(1, 1, 1);
+    if(bonus == GLUE){
+        glColor3d(1, 0.8, 0); // Bonus coloured of the Glue
+    }else{
+        glColor3d(1, 1, 1);
+    }
     glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y); // (z, x, y)
     glRotated(90, 0, 1, 0);
     drawSquareForm(size);
@@ -225,11 +229,11 @@ void drawObstacles(ObstacleList list)
 }
 
 /* Draw the x, y, z axis */
-void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball)
+void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball, Bonus bonus)
 {
     if(isCorridorEnd(racket_pos - 2)){
         drawCorridor();
-        drawRacket(x, y, racket_size, racket_points);
+        drawRacket(x, y, racket_size, racket_points, bonus);
         return;
     }
     // drawOrigin();
@@ -249,7 +253,7 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
 
 
     /* Draw the racket */
-    drawRacket(x, y, racket_size, racket_points);
+    drawRacket(x, y, racket_size, racket_points, bonus);
 
     if (ball_state == MOVING)
     {

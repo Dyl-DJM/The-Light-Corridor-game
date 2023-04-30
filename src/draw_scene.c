@@ -71,12 +71,15 @@ void drawRacket(double center_x, double center_y, double size, RectanglePoints *
 
 void drawBall(Coords3D *ball)
 {
-    glColor3d(1, .2, .2);
+
+    glColor3d(.2, .2, 1.);
     glPushMatrix();
     glTranslated(4.95 + ball->z, ball->x - 0.5, ball->y);
     glScaled(0.05, 0.05, 0.05);
-
-    drawSphere();
+    if (racket_pos - 6 <= ball->z)
+    {
+        drawSphere();
+    }
     glPopMatrix();
 }
 
@@ -123,21 +126,21 @@ void drawSection(int id)
     glScaled(1, 1, 1);
     if (id % 2 == 0)
     {
-        drawSquare(0.5, 0.5, 1);
+        drawSquare(0.7, 0.7, 1);
     }
     else
     {
-        drawSquare(0.6, 0.6, 0.6);
+        drawSquare(0.8, 0.8, 0.8);
     }
     /*High*/
     glTranslated(0, 0, 0.5);
     if (id % 2 == 0)
     {
-        drawSquare(0.5, 0.5, 1);
+        drawSquare(0.7, 0.7, 1);
     }
     else
     {
-        drawSquare(0.6, 0.6, 0.6);
+        drawSquare(0.8, 0.8, 0.8);
     }
     glPopMatrix();
 
@@ -245,6 +248,42 @@ void drawManyBonus(BonusList list)
     }
 }
 
+void setLightBall(Coords3D ball)
+{
+    GLfloat light_ambient[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_position[] = {4.70 + ball.z, ball.x - 0.5, ball.y};
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 2.0);
+    glEnable(GL_LIGHT0);
+}
+
+void setLightCamera(Coords3D ball)
+{
+    GLfloat light_ambient[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_diffuse[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_specular[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_position[] = {5.0 + racket_pos, 0.0, 0.25};
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+    glLightfv(GL_LIGHT1, GL_POSITION, light_position);
+    glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 1.3);
+    if (racket_pos == ball.z)
+    {
+        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 10);
+    }
+    else
+    {
+        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 10 / -(ball.z - racket_pos));
+    }
+    glEnable(GL_LIGHT1);
+}
+
 /* Draw the x, y, z axis */
 void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball, Bonus bonus, BonusList bonus_list)
 {
@@ -263,6 +302,12 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
 
     /* Draw the racket */
     drawRacket(x, y, racket_size, racket_points, bonus);
+
+    /* Configure Lighting*/
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    setLightCamera(*ball);
+    setLightBall(*ball);
 
     if (ball_state == MOVING)
     {

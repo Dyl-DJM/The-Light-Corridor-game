@@ -46,10 +46,14 @@ int ballTouchObstacle(Obstacle obstacle, Coords3D ball)
 
         if (ball.x + ball_trans_x <= 0.05 || ball.x + ball_trans_x >= 0.95)
         {
-            if (ball.y + ball_trans_y <= 0.05 || ball.y + ball_trans_y >= 0.45)
-            {
-                ball_trans_z *= -1;
-            }
+            ball_trans_z *= -1;
+            return 0;
+        }
+
+        if (ball.y + ball_trans_y <= 0.05 || ball.y + ball_trans_y >= 0.45)
+        {
+            ball_trans_z *= -1;
+            return 0;
         }
     }
     return 0;

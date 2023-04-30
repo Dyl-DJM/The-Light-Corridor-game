@@ -22,7 +22,10 @@ OBJ_TEST= $(OBJDIR)types.o $(OBJDIR)obstacle.o $(OBJDIR)bonus.o $(OBJDIR)test.o
 EXEC_TEST= $(BINDIR)test
 
 
-all : $(EXEC_MAIN)
+all :  
+	mkdir -p obj
+	mkdir -p bin
+	make $(EXEC_MAIN) 
 
 
 $(EXEC_MAIN) : $(OBJ_MAIN)
@@ -31,8 +34,9 @@ $(EXEC_MAIN) : $(OBJ_MAIN)
 
 
 test : $(OBJ_TEST)
+	mkdir -p bin
+	mkdir -p obj
 	$(CC) $(CFLAGS) $(OBJ_TEST) -o $(EXEC_TEST) $(LDFLAGS)
-
 
 
 clean :

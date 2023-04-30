@@ -43,6 +43,8 @@ int main(void)
 
     printBonusList(*bonus_list);
     removeBonus(bonus_list, -20);
+
+    printf("\nTest Remove with racket pos = -20\n");
     printBonusList(*bonus_list);
 
     return 0;

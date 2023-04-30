@@ -40,6 +40,7 @@ void printBonus(BonusObject bonus)
 void printBonusList(BonusList list)
 {
     BonusObject *bonus = list.first_bonus;
+
     while (bonus != NULL)
     {
         printBonus(*bonus);
@@ -119,7 +120,7 @@ void addRandomBonus(BonusList *list, double ball_pos, double limit)
             type = LIFE;
             break;
         }
-        int z = list->last_bonus == NULL ? ball_pos - rand() % 3 - 7.5 : (list->last_bonus->coords.z) - rand() % 3 - 7.5;
+        int z = list->last_bonus == NULL ? ball_pos - rand() % 3 - 1.5 : (list->last_bonus->coords.z) - rand() % 3 - 7.5;
         if (z < limit)
         {
             addBonus(list, initCoords3D(x, y, z), 0.05, type);

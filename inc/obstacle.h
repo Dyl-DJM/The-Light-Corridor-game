@@ -1,6 +1,7 @@
 #pragma once
 
 #include <time.h>
+#include <stdlib.h>
 #include "../inc/types.h"
 #include "3D_tools.h"
 
@@ -33,4 +34,4 @@ void addRandomObstacle(ObstacleList *list, double ball_pos, double limit);
 
 int squareInObstacle(Obstacle obstacle, RectanglePoints rect);
 
-void freeObstacles(ObstacleList * obstacles); 
+void freeObstacles(ObstacleList *obstacles);

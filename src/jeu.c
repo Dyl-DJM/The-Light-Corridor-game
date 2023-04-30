@@ -1,6 +1,5 @@
 #include "../inc/jeu.h"
 
-
 /*============================== Variables ==================================*/
 
 static float aspectRatio = 1.0;
@@ -18,9 +17,7 @@ MovingState racket_state = STOP; // The ball isn't moving at the beginning, it j
 double racket_size = 0.1;
 
 /* Bonus */
-Bonus bonus = NONE;	/* At the beginning there is not any bonus */
-
-
+Bonus bonus = NONE; /* At the beginning there is not any bonus */
 
 /*============================== Functions ==================================*/
 
@@ -35,7 +32,6 @@ void onWindowResizedGame(GLFWwindow *window, int width, int height)
 	gluPerspective(60.0, aspectRatio, Z_NEAR, Z_FAR);
 	glMatrixMode(GL_MODELVIEW);
 }
-
 
 /* Key events handling */
 void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -70,21 +66,20 @@ void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 		case GLFW_KEY_RIGHT:
 			theta += 5;
 			break;
-		default:{
+		default:
+		{
 		} // other key unhandled
 		}
 	}
 }
-
 
 /* Handles the movements of the cursor in the window */
 void movedCursor(GLFWwindow *window, double x, double y)
 {
 	/* Update of the current position */
 	mouse.x = x;
-	mouse.y = y; 
+	mouse.y = y;
 }
-
 
 /* Handles the right and left mouse buttons */
 void mouseButton(GLFWwindow *window, int button, int action, int mods)
@@ -96,13 +91,13 @@ void mouseButton(GLFWwindow *window, int button, int action, int mods)
 	}
 	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) /* The racket moves and stop*/
 	{
-		if(ball_state == STOP){ /* The ball hasn't been launched yet, wa cant move the racket */
+		if (ball_state == STOP)
+		{ /* The ball hasn't been launched yet, wa cant move the racket */
 			return;
 		}
 		racket_state = racket_state == MOVING ? STOP : MOVING;
 	}
 }
-
 
 /* Launches the window with the 3D scene of the game */
 int launchGame()
@@ -144,11 +139,6 @@ int launchGame()
 	BonusList *bonus_list = initBonusList();
 
 	/* TODO : À retirer, c'est l'ajout manuel d'un seul bonus pour test*/
-	Coords3D bcoords;
-    bcoords.x = -1;
-    bcoords.y = -1;
-    bcoords.z = -2;
-    addBonus(bonus_list, bcoords, 2);
 	printBonusList(*bonus_list); /* TODO : Pour débugger */
 
 	/* Racket points */
@@ -196,8 +186,9 @@ int launchGame()
 
 		/* Animate scenery */
 		if (ball_state == MOVING)
-		{	
-			if(move_ball(*obstacles, &ball, racket_points, &ball_state, bonus) == 2){ /* The ball is behind the racket */
+		{
+			if (move_ball(*obstacles, &ball, racket_points, &ball_state, bonus) == 2)
+			{ /* The ball is behind the racket */
 				removeLife();
 			}
 		}
@@ -208,7 +199,9 @@ int launchGame()
 
 		/* Update Obstacles*/
 		addRandomObstacle(obstacles, ball.z, endCorridor() - 3);
+		addRandomBonus(bonus_list, ball.z, endCorridor() - 3);
 		removeObs(obstacles, racket_pos);
+		removeBonus(bonus_list, racket_pos);
 	}
 
 	/* Free the memory resources*/

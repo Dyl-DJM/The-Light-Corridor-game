@@ -1,7 +1,5 @@
 #include "../inc/obstacle.h"
 
-#include <stdlib.h>
-
 Obstacle *initObstacle(RectanglePoints rect, double section)
 {
     Obstacle *tmp = malloc(sizeof(*tmp));
@@ -62,19 +60,6 @@ void removeObs(ObstacleList *list, double racket_pos)
         list->first_obs = obstacle->next_obs;
         obstacle = obstacle->next_obs;
         free(remove);
-    }
-    while (obstacle != NULL)
-    {
-        Obstacle *danglingElem = obstacle->next_obs;
-
-        while (danglingElem != NULL && danglingElem->section < -racket_pos - 2)
-        { /* Supression*/
-            Obstacle *remove = danglingElem;
-            danglingElem = danglingElem->next_obs;
-            free(remove);
-        }
-        obstacle->next_obs = danglingElem;
-        obstacle = obstacle->next_obs;
     }
 }
 
@@ -139,7 +124,8 @@ void addRandomObstacle(ObstacleList *list, double ball_pos, double limit)
         }
         RectanglePoints rect = initRect(initCoords(x1, y1), initCoords(x2, y2));
         int z = list->last_obs == NULL ? rand() % 3 - ball_pos + 3 : rand() % 3 + (list->last_obs->section) + 3;
-        if(z < limit){
+        if (z < limit)
+        {
             add(list, rect, z);
         }
     }
@@ -185,15 +171,16 @@ int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
     return 0;
 }
 
-
-
-void freeObstacles(ObstacleList * obstacles){ 
-    if(obstacles == NULL){  
+void freeObstacles(ObstacleList *obstacles)
+{
+    if (obstacles == NULL)
+    {
         return;
     }
 
-    for(Obstacle * current = obstacles->first_obs; current != NULL;){
-        Obstacle * remove = current;
+    for (Obstacle *current = obstacles->first_obs; current != NULL;)
+    {
+        Obstacle *remove = current;
         current = current->next_obs;
         free(remove);
         remove = NULL;

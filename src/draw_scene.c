@@ -66,11 +66,14 @@ void drawRacket(double center_x, double center_y, double size, RectanglePoints *
     *racket_points = initRect(point1, point2);
 
     glPushMatrix();
-        if(bonus == GLUE){
-            glColor3d(1, 0, 0); // Bonus coloured of the Glue
-        }else{
-            glColor3d(1, 1, 1);
-        }
+    if (bonus == GLUE)
+    {
+        glColor3d(1, 0, 0); // Bonus coloured of the Glue
+    }
+    else
+    {
+        glColor3d(1, 1, 1);
+    }
     glTranslated(5 + racket_pos, racket_pos_x, racket_pos_y); // (z, x, y)
     glRotated(90, 0, 1, 0);
     drawSquareForm(size);
@@ -187,14 +190,14 @@ void drawCorridor()
 {
     for (int i = racket_pos; i > racket_pos - nb_section; i--)
     {
-        if(!isCorridorEnd(i)){
+        if (!isCorridorEnd(i))
+        {
             drawSection(i);
         }
     }
 }
 
-void 
-drawObstacle(Obstacle *obstacle)
+void drawObstacle(Obstacle *obstacle)
 {
     int section = obstacle->section;
     float wall_width = obstacle->rect.a.x - obstacle->rect.b.x;
@@ -228,24 +231,23 @@ void drawObstacles(ObstacleList list)
     }
 }
 
-
-
-
-void drawBonus(BonusObject bonus){
+void drawBonus(BonusObject bonus)
+{
     glPushMatrix();
-        glColor3d(1, 1, 0);
-        glTranslated(0,  0 , 0.25);  // Mettre les bonnes valeurs de coordonnées de bonus
-        glScaled(0.05, 0.05, 0.05);
-        drawSphere();
+    glColor3d(1, 1, 0);
+    glTranslated(4.95 + bonus.coords.z, bonus.coords.x - 0.5, bonus.coords.y); // Mettre les bonnes valeurs de coordonnées de bonus
+    glScaled(0.05, 0.05, 0.05);
+    drawSphere();
     glPopMatrix();
 }
 
-void drawManyBonus(BonusList list){
+void drawManyBonus(BonusList list)
+{
     BonusObject *bonus = list.first_bonus;
 
     while (bonus != NULL)
     {
-        if (bonus->coords.z > -racket_pos + 6)
+        if (bonus->coords.z < racket_pos - 5.5)
         {
             break;
         };
@@ -257,7 +259,8 @@ void drawManyBonus(BonusList list){
 /* Draw the x, y, z axis */
 void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball, Bonus bonus, BonusList bonus_list)
 {
-    if(isCorridorEnd(racket_pos - 2)){
+    if (isCorridorEnd(racket_pos - 2))
+    {
         drawCorridor();
         drawRacket(x, y, racket_size, racket_points, bonus);
         return;
@@ -272,7 +275,6 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
     drawWall(9, 2);
     drawWall(12, 3);
     */
-
 
     /* Draw Obstacles*/
     drawObstacles(obstacles);

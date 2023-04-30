@@ -31,22 +31,19 @@ int main(void)
     /*=========================== Bonus tests ============================*/
 
     printf("\n\n=== Bonus part ===\n\n");
-    BonusList * blist = initBonusList();
-    printBonusList(*blist);
+    BonusList *bonus_list = initBonusList();
+    printBonusList(*bonus_list);
 
-    Coords3D bcoords;
-    bcoords.x = 10;
-    bcoords.y = 20;
-    bcoords.z = 30;
-    addBonus(blist, bcoords, 10);
-    addBonus(blist, bcoords, 20);
-    addBonus(blist, bcoords, 10);
-    addBonus(blist, bcoords, 10);
-    addBonus(blist, bcoords, 15);
+    ball_pos = -2;
+    for (int i = 0; i < 5; i++)
+    {
+        addRandomBonus(bonus_list, ball_pos, 1000);
+        ball_pos -= 4;
+    }
 
-    printBonusList(*blist);
-    removeBonus(blist, -100);
-    printBonusList(*blist);
+    printBonusList(*bonus_list);
+    removeBonus(bonus_list, -20);
+    printBonusList(*bonus_list);
 
     return 0;
 }

@@ -1,5 +1,6 @@
 #include "../inc/obstacle.h"
 
+/* Initalizes an obstacle object thanks to its points and its position in the z axis */
 Obstacle *initObstacle(RectanglePoints rect, double section)
 {
     Obstacle *tmp = malloc(sizeof(*tmp));
@@ -16,6 +17,7 @@ Obstacle *initObstacle(RectanglePoints rect, double section)
     return tmp;
 }
 
+/* Initializes an obstacle chained list */
 ObstacleList *initObstacleList()
 {
     ObstacleList *list = malloc(sizeof(*list));
@@ -31,20 +33,22 @@ ObstacleList *initObstacleList()
     return list;
 }
 
+/* Displays the elements stored in the obstacle list */
 void printList(ObstacleList list)
 {
     Obstacle *obstacle = list.first_obs;
 
-    printf("\n\n=== LIST ===\n");
+    printf("\n\n=== LIST ===\n"); /* Beginning of the list display */
     while (obstacle != NULL)
     {
         print(obstacle->rect);
         printf("%f\n", obstacle->section);
         obstacle = obstacle->next_obs;
     }
-    printf("============\n");
+    printf("============\n"); /* End of the list display */
 }
 
+/* Removes all the obstacles behing the position on the z axis given */
 void removeObs(ObstacleList *list, double racket_pos)
 {
     if (list == NULL)
@@ -63,6 +67,7 @@ void removeObs(ObstacleList *list, double racket_pos)
     }
 }
 
+/* Adds a new obstacle in the list */
 void add(ObstacleList *list, RectanglePoints obs, double section)
 {
     Obstacle *to_insert = initObstacle(obs, section);
@@ -84,6 +89,7 @@ void add(ObstacleList *list, RectanglePoints obs, double section)
     tmp->next_obs = to_insert;
 }
 
+/* Adds a random positioned obstacle in the corridor */
 void addRandomObstacle(ObstacleList *list, double ball_pos, double limit)
 {
 
@@ -131,10 +137,11 @@ void addRandomObstacle(ObstacleList *list, double ball_pos, double limit)
     }
 }
 
+/* Checks if a rectangle shape (four points) is included in an obstacle object */
 int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
 {
 
-    if (obstacle.rect.a.x <= rect.a.x && rect.a.x <= obstacle.rect.d.x)
+    if (obstacle.rect.a.x <= rect.a.x && rect.a.x <= obstacle.rect.d.x) // Left low corner
     {
         if (obstacle.rect.a.y <= rect.a.y && rect.a.y <= obstacle.rect.d.y)
         {
@@ -142,7 +149,7 @@ int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
         }
     }
 
-    if (obstacle.rect.a.x <= rect.b.x && rect.b.x <= obstacle.rect.d.x)
+    if (obstacle.rect.a.x <= rect.b.x && rect.b.x <= obstacle.rect.d.x) // Right low corner
     {
         if (obstacle.rect.a.y <= rect.b.y && rect.b.y <= obstacle.rect.d.y)
         {
@@ -150,7 +157,7 @@ int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
         }
     }
 
-    if (obstacle.rect.a.x <= rect.c.x && rect.c.x <= obstacle.rect.d.x)
+    if (obstacle.rect.a.x <= rect.c.x && rect.c.x <= obstacle.rect.d.x) // Left high corner
     {
         if (obstacle.rect.a.y <= rect.c.y && rect.c.y <= obstacle.rect.d.y)
         {
@@ -158,7 +165,7 @@ int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
         }
     }
 
-    if (obstacle.rect.a.x <= rect.d.x && rect.d.x <= obstacle.rect.d.x)
+    if (obstacle.rect.a.x <= rect.d.x && rect.d.x <= obstacle.rect.d.x) // Right high corner
     {
         if (obstacle.rect.a.y <= rect.d.y && rect.d.y <= obstacle.rect.d.y)
         {
@@ -168,6 +175,7 @@ int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
     return 0;
 }
 
+/* Frees the allocated objects stored in the allocated list */
 void freeObstacles(ObstacleList *obstacles)
 {
     if (obstacles == NULL)

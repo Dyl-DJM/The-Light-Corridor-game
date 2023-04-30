@@ -1,25 +1,28 @@
 #include "../inc/menu.h"
 
-static const float GL_VIEW_SIZE = 6.;
+/*============================ Parameters ==============================*/
 
 #define AMOUNT_OF_PART 100
 
-Coords mouseMenu;
-
+static const float GL_VIEW_SIZE = 6.;
 static float aspectRatio = 1.0;
 
 double ball_menu_pos = 0;
 double wall_pos = 3;
 
+Coords mouseMenu; // Mouse 2D coordinates
 Part particules[AMOUNT_OF_PART];
 
+/* Display type flags */
 int play_flag = 0;
 int quit_flag = 0;
 
 int play_hover_flag = 0;
 int quit_hover_flag = 0;
 
-/**/
+/*============================== Functions ================================*/
+
+/* Initializes the particles array */
 void initParts()
 {
 	for (int i = 0; i < AMOUNT_OF_PART; i++)
@@ -34,6 +37,9 @@ void initParts()
 	}
 }
 
+/* - - - - Particles animation - - - - */
+
+/* Animates all the particles*/
 void animParts()
 {
 	for (int i = 0; i < AMOUNT_OF_PART; i++)
@@ -49,15 +55,16 @@ void animParts()
 	}
 }
 
-/*===========  Draw part ================*/
+/* - - - - Particles drawing - - - - */
 
+/* Draw all the particles */
 void drawParts()
 {
 	for (int i = 0; i < AMOUNT_OF_PART; i++)
 	{
 		glPushMatrix();
 		glBegin(GL_QUADS);
-		glScaled(0.1, 0.1, 0);
+		glScaled(0.1, 0.1, 0); // A particle is a small colored square
 		glColor3d(particules[i].r, particules[i].g, particules[i].b);
 		glVertex2d(particules[i].coords.x, particules[i].coords.y);
 		glVertex2d(particules[i].coords.x + 0.2, particules[i].coords.y);
@@ -68,6 +75,7 @@ void drawParts()
 	}
 }
 
+/* Draws the play logo (triangle) */
 void drawPlay()
 {
 	glPushMatrix();
@@ -77,15 +85,17 @@ void drawPlay()
 	glPopMatrix();
 }
 
+/* Draws the cross logo */
 void drawCross()
 {
-
+	/* First line */
 	glPushMatrix();
 	glRotated(45, 0, 0, 1);
 	glScaled(0.05, 0.7, 0);
 	drawSquare(0, 0, 0);
 	glPopMatrix();
 
+	/* Second line */
 	glPushMatrix();
 	glRotated(135, 0, 0, 1);
 	glScaled(0.05, 0.7, 0);
@@ -93,13 +103,14 @@ void drawCross()
 	glPopMatrix();
 }
 
+/* Draw the two buttons in the menu */
 void drawButtons()
 {
 	glPushMatrix();
 	glTranslated(0, 1.5, 0);
 	glScaled(3, 1, 0);
 
-	if (play_hover_flag)
+	if (play_hover_flag) // The mouse is on the play button
 	{
 		drawSquare(1, 1, 0.);
 	}
@@ -112,7 +123,7 @@ void drawButtons()
 	glPushMatrix();
 	glScaled(3, 1, 0);
 
-	if (quit_hover_flag)
+	if (quit_hover_flag) // The mouse is on the quit button
 	{
 		drawSquare(1, 0.5, 0.3);
 	}
@@ -122,10 +133,12 @@ void drawButtons()
 	}
 	glPopMatrix();
 
+	/* logos in the buttons */
 	drawPlay();
 	drawCross();
 }
 
+/* Draws the ball */
 void drawBallMenu()
 {
 	glPushMatrix();
@@ -136,6 +149,7 @@ void drawBallMenu()
 	glPopMatrix();
 }
 
+/* Draws the obstacle of the menu */
 void drawMenuWall()
 {
 	glPushMatrix();
@@ -157,6 +171,7 @@ void drawMenuWall()
 	glPopMatrix();
 }
 
+/* Rezizes the 2D window */
 void onWindowResized(GLFWwindow *window, int width, int height)
 {
 	aspectRatio = width / (float)height;
@@ -180,12 +195,14 @@ void onWindowResized(GLFWwindow *window, int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
+/* Makes the conversion between the window and the scene 2D coordinates */
 void screen_to_virtual(double *a, double *b)
 {
 	*a = GL_VIEW_SIZE * aspectRatio * (*a) / WINDOW_WIDTH - (GL_VIEW_SIZE * aspectRatio / 2);
 	*b = -(GL_VIEW_SIZE * (*b) / WINDOW_HEIGHT - (GL_VIEW_SIZE / 2));
 }
 
+/* Checks if the click was on the play button area */
 int clickInFirstButton()
 {
 	if (-1.5 <= mouseMenu.x && mouseMenu.x <= 1.5)
@@ -198,6 +215,7 @@ int clickInFirstButton()
 	return 0;
 }
 
+/* Checks if the click was on the quit button area */
 int clickInSecondButton()
 {
 
@@ -211,37 +229,36 @@ int clickInSecondButton()
 	return 0;
 }
 
+/* Handles the mouse click events */
 void clickEvent(GLFWwindow *window, int code, int action, int other)
 {
-
 	double x, y;
 	if (action == GLFW_PRESS)
 	{
 		glfwGetCursorPos(window, &x, &y);
-		screen_to_virtual(&x, &y);
+		screen_to_virtual(&x, &y); // Conversion with the scene
 		mouseMenu.x = x;
 		mouseMenu.y = y;
 
 		if (clickInFirstButton())
 		{
-			play_flag = 1;
+			play_flag = 1; // The player wants to play a game
 		}
 		else if (clickInSecondButton())
 		{
-			quit_flag = 1;
+			quit_flag = 1; // The player wants to quit
 		}
 	}
 }
 
+/* Handles the cursor movements on the window */
 void movedCursorMenu(GLFWwindow *window, double x, double y)
 {
-
 	screen_to_virtual(&x, &y);
+	mouseMenu.x = x;
+	mouseMenu.y = y;
 
-	mouseMenu.x = x; /* largeur;*/
-	mouseMenu.y = y; /*/ hauteur;*/
-
-	if (clickInFirstButton())
+	if (clickInFirstButton()) // The cursor was moved to the play button area
 	{
 		play_hover_flag = 1;
 	}
@@ -250,7 +267,7 @@ void movedCursorMenu(GLFWwindow *window, double x, double y)
 		play_hover_flag = 0;
 	}
 
-	if (clickInSecondButton())
+	if (clickInSecondButton()) // The cursor was moved to the exit button area
 	{
 		quit_hover_flag = 1;
 	}
@@ -260,13 +277,14 @@ void movedCursorMenu(GLFWwindow *window, double x, double y)
 	}
 }
 
+/* Launches the window with the 2D display menu */
 int launchMenu()
 {
-
 	srand(time(NULL)); /* Initializing the seed */
 
-	initParts();
+	initParts(); // Initializes all the particles of the menu
 
+	/* Initializing the values to avoid some bad behaviours */
 	mouseMenu.x = 0.;
 	mouseMenu.y = 0.;
 
@@ -294,7 +312,7 @@ int launchMenu()
 
 	glfwSetWindowSizeCallback(window, onWindowResized);
 	glfwSetCursorPosCallback(window, movedCursorMenu); /* Mouse moved */
-	glfwSetMouseButtonCallback(window, clickEvent);
+	glfwSetMouseButtonCallback(window, clickEvent);	   /* Mouse click events */
 
 	onWindowResized(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -303,7 +321,6 @@ int launchMenu()
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-
 		/* Get time (in second) at loop beginning */
 		double startTime = glfwGetTime();
 
@@ -313,12 +330,10 @@ int launchMenu()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
+		/* Draw part of the menu */
 		drawParts();
-
 		drawButtons();
-
 		drawBallMenu();
-
 		drawMenuWall();
 
 		if (play_flag)
@@ -346,6 +361,9 @@ int launchMenu()
 			glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS - elapsedTime);
 		}
 
+		/* Animation of the ball */
+
+		// Ball animation
 		if (ball_menu_pos >= wall_pos)
 		{
 			ball_menu_pos = 0;
@@ -355,6 +373,7 @@ int launchMenu()
 			ball_menu_pos = (ball_menu_pos + .1);
 		}
 
+		// Particles animation
 		animParts();
 	}
 

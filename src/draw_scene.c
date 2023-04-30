@@ -1,16 +1,5 @@
 #include "../inc/draw_scene.h"
 
-/*void drawSquare(double size){
-    glBegin(GL_LINE_LOOP);
-        glColor3f(1, 1, 1); // White color
-
-        glVertex3f(0, 0, 0);
-        glVertex3f(10, 0, 0);
-        glVertex3f(10, 60, 0);
-        glVertex3f(0, 60, 0);
-    glEnd();
-}*/
-
 int nb_section = 7;
 
 Coords thrownBall;
@@ -265,16 +254,7 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
         drawRacket(x, y, racket_size, racket_points, bonus);
         return;
     }
-    // drawOrigin();
     drawCorridor();
-
-    // drawWall tests
-    /*
-    drawWall(3, 0);
-    drawWall(6, 1);
-    drawWall(9, 2);
-    drawWall(12, 3);
-    */
 
     /* Draw Obstacles*/
     drawObstacles(obstacles);

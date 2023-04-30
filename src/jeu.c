@@ -67,8 +67,7 @@ void onKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 			theta += 5;
 			break;
 		default:
-		{
-		} // other key unhandled
+			printf("Unknown Command !\n");
 		}
 	}
 }
@@ -138,8 +137,7 @@ int launchGame()
 	/* Bonus */
 	BonusList *bonus_list = initBonusList();
 
-	/* TODO : À retirer, c'est l'ajout manuel d'un seul bonus pour test*/
-	printBonusList(*bonus_list); /* TODO : Pour débugger */
+	printBonusList(*bonus_list);
 
 	/* Racket points */
 	RectanglePoints racket_points = initRect(initCoords(0, 0), initCoords(0, 0));

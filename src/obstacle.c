@@ -42,7 +42,7 @@ void printList(ObstacleList list)
         printf("%f\n", obstacle->section);
         obstacle = obstacle->next_obs;
     }
-    printf("NULL\n");
+    printf("============\n");
 }
 
 void removeObs(ObstacleList *list, double racket_pos)
@@ -133,9 +133,6 @@ void addRandomObstacle(ObstacleList *list, double ball_pos, double limit)
 
 int squareInObstacle(Obstacle obstacle, RectanglePoints rect)
 {
-
-    // print(obstacle.rect);
-    // print(rect);
 
     if (obstacle.rect.a.x <= rect.a.x && rect.a.x <= obstacle.rect.d.x)
     {

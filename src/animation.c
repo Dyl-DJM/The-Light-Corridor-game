@@ -84,7 +84,6 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
     double center_racket_y = racket_points.d.y - ((racket_points.d.y - racket_points.a.y) / 2);
     double distance_center_x = ball.x - center_racket_x;
     double distance_center_y = ball.y - center_racket_y;
-    // printf("Distance center x = %f, Distance center y = %f\n", distance_center_x, distance_center_y);
 
     ball_trans_x *= -1;
     ball_trans_y *= -1;
@@ -116,18 +115,15 @@ void setStoppedBall(Coords3D *ball, RectanglePoints racket_points, MovingState *
 
 int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
-    // printf("Ball = %f Racket = %f\n", ball.z, racket_pos);
     int value = 0;
 
     if ((value = ballTouchRacket(racket_points, ball, ball_state)))
     {
-        // printf("Boing ! Ball = %f Racket = %f\n", ball->z, racket_pos);
         return value;
     }
 
     if (ballTouchWall(*ball))
     {
-        // printf("Boing (wall) ! Ball = %f \n", ball.z);
         return 0;
     }
 
@@ -138,7 +134,6 @@ int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
         // printf("Ball = %f Section = %f\n", ball.z, obstacle->section);
         if (ballTouchObstacle(*obstacle, *ball))
         {
-            // printf("Boing ! Ball = %f Section = %f\n", ball.z, obstacle->section);
             break;
         }
         obstacle = obstacle->next_obs;
@@ -198,9 +193,6 @@ void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingS
 
     if (obstacle != NULL && -racket_pos <= obstacle->section && obstacle->section < -racket_pos + racket_speed)
     { /*The obstacle is in front of the racket*/
-
-        // printf("section = %f, racket_pos = %f\n", obstacle->section, racket_pos);
-        //  printf("%d\n", obstacle == last_obstacle_passed);
         if (squareInObstacle(*obstacle, racket_points))
         {
             return;

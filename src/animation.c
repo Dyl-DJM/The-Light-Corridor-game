@@ -35,12 +35,20 @@ int ballTouchObstacle(Obstacle obstacle, Coords3D ball)
 {
     if ((-ball.z <= obstacle.section && obstacle.section <= -ball.z - ball_trans_z) || (-ball.z >= obstacle.section && obstacle.section >= -ball.z - ball_trans_z))
     {
-        if (ball.x + ball_trans_x >= obstacle.rect.a.x - 0.049 && ball.x + ball_trans_x <= obstacle.rect.d.x + 0.049)
+        if ((ball.x + ball_trans_x >= obstacle.rect.a.x - 0.049 && ball.x + ball_trans_x <= obstacle.rect.d.x + 0.049))
         {
             if (ball.y + ball_trans_y >= obstacle.rect.a.y - 0.049 && ball.y + ball_trans_y <= obstacle.rect.d.y + 0.049)
             {
                 ball_trans_z *= -1;
                 return 1;
+            }
+        }
+
+        if (ball.x + ball_trans_x <= 0.05 || ball.x + ball_trans_x >= 0.95)
+        {
+            if (ball.y + ball_trans_y <= 0.05 || ball.y + ball_trans_y >= 0.45)
+            {
+                ball_trans_z *= -1;
             }
         }
     }

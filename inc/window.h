@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 /* Framerate */
 static const double FRAMERATE_IN_SECONDS = 1. / 30.;
 

@@ -1,11 +1,29 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Animation module gathers all the mechanic     =
+=  of objects which can move.                        =
+=  Its is related to the ball bounces, racket moves. =
+=													 =
+======================================================
+*/
+
 #include "../inc/animation.h"
 
+/*============================= Variables ==============================*/
 double ball_speed = 0.1;
 double racket_speed = 0.05;
 double ball_trans_x = 0;
 double ball_trans_y = 0;
 double ball_trans_z = -0.1;
+Obstacle *last_obstacle_passed;
 
+/*============================= Functions ==============================*/
+
+/* Ball touching a wall of the corridor */
 int ballTouchWall(Coords3D ball)
 {
     if (ball.x + ball_trans_x <= 0.05)
@@ -31,6 +49,7 @@ int ballTouchWall(Coords3D ball)
     return 0;
 }
 
+/* Ball touching an obstacle */
 int ballTouchObstacle(Obstacle obstacle, Coords3D ball)
 {
     if ((-ball.z <= obstacle.section && obstacle.section <= -ball.z - ball_trans_z) || (-ball.z >= obstacle.section && obstacle.section >= -ball.z - ball_trans_z))
@@ -59,6 +78,7 @@ int ballTouchObstacle(Obstacle obstacle, Coords3D ball)
     return 0;
 }
 
+/* The ball meets the racket */
 int ballTouchRacket(RectanglePoints racket_points, Coords3D *ball, MovingState *ball_state)
 {
     if (ball->z <= racket_pos && ball->z >= racket_pos - racket_speed - ball_trans_z && ball_trans_z > 0)
@@ -90,6 +110,7 @@ int ballTouchRacket(RectanglePoints racket_points, Coords3D *ball, MovingState *
     return 0;
 }
 
+/* The ball changes its direction by touching the racket */
 void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
 {
     double center_racket_x = racket_points.d.x - ((racket_points.d.x - racket_points.a.x) / 2);
@@ -105,6 +126,7 @@ void ballBounceOnRacket(Coords3D ball, RectanglePoints racket_points)
     ball_trans_z *= -1;
 }
 
+/* The ball is stopped */
 void setStoppedBall(Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
     double center_racket_x = racket_points.d.x - ((racket_points.d.x - racket_points.a.x) / 2);
@@ -125,6 +147,7 @@ void setStoppedBall(Coords3D *ball, RectanglePoints racket_points, MovingState *
     }
 }
 
+/* Computes all the possible ways of colision in the scene */
 int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state)
 {
     int value = 0;
@@ -154,6 +177,7 @@ int collision(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
     return 0;
 }
 
+/* Makes the ball move */
 int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_points, MovingState *ball_state, Bonus bonus)
 {
 
@@ -175,8 +199,7 @@ int move_ball(ObstacleList obstacles, Coords3D *ball, RectanglePoints racket_poi
     return type_of_collision;
 }
 
-Obstacle *last_obstacle_passed;
-
+/* Makes the racket move */
 void move_racket(ObstacleList *obstacles, RectanglePoints racket_points, MovingState *racket_state, Bonus *bonus_state, BonusList *bonus_list)
 {
     Obstacle *obstacle = obstacles->first_obs;

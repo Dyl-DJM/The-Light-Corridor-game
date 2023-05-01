@@ -1,3 +1,16 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Graphical display module is used to call one  =
+=  of the two possible windows which announces the   =
+=  result of the game for the user in a 2D scene.    =
+=													 =
+======================================================
+*/
+
 #pragma once
 
 #include "../inc/types.h"

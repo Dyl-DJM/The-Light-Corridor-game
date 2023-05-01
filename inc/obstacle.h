@@ -1,3 +1,18 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Obstacle module is used to handle the whole   =
+=  management linked to the obstacles in the game.   =
+=  It contains the chained linked structure that 	 =
+=  stores obstacles and the actions we can apply	 =
+=  (add an obstacle, remove one, ...)		         =
+=													 =
+======================================================
+*/
+
 #pragma once
 
 #include <time.h>

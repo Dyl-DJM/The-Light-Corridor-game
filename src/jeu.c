@@ -1,3 +1,17 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Game module concerns all the actions we can   =
+=  see in the 3D scene.                              =
+=  Graphical elements, events (click, moved cursor,  =
+=  animted objects...)                               =
+=													 =
+======================================================
+*/
+
 #include "../inc/jeu.h"
 
 /*============================== Variables ==================================*/

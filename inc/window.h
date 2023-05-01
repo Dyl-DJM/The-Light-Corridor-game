@@ -1,5 +1,18 @@
 #pragma once
 
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Window module is used for the major part      =
+=  of the windows properties used to make the 3D	 =
+=  and 2D scenes of the project						 =
+=													 =
+======================================================
+*/
+
 #define GLFW_INCLUDE_NONE
 
 #include <GLFW/glfw3.h>

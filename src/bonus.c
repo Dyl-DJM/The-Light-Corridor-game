@@ -1,5 +1,19 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Bonus module gathers all the mechanic that    =
+=  concerns the bonus of the game.                   =
+=  We can find the list of bonus management there    =
+=													 =
+======================================================
+*/
+
 #include "../inc/bonus.h"
 
+/* Initializes a bonus */
 BonusObject *initBonus(Coords3D coords, double radius, Bonus type)
 {
     BonusObject *tmp = malloc(sizeof(*tmp));
@@ -17,6 +31,7 @@ BonusObject *initBonus(Coords3D coords, double radius, Bonus type)
     return tmp;
 }
 
+/* Initializes an empty list of bonus */
 BonusList *initBonusList()
 {
     BonusList *list = malloc(sizeof(*list));
@@ -32,11 +47,13 @@ BonusList *initBonusList()
     return list;
 }
 
+/* Console display of a bonus */
 void printBonus(BonusObject bonus)
 {
     printf("(%f, %f, %f) => %f => (type : %d)\n", bonus.coords.x, bonus.coords.y, bonus.coords.z, bonus.r, bonus.type);
 }
 
+/* Display the elements stored in the bonus list */
 void printBonusList(BonusList list)
 {
     BonusObject *bonus = list.first_bonus;
@@ -48,6 +65,7 @@ void printBonusList(BonusList list)
     }
 }
 
+/* Removes all the bonus stored which are behind a given position */
 void removeBonus(BonusList *list, double racket_pos)
 {
     if (list == NULL)
@@ -66,6 +84,7 @@ void removeBonus(BonusList *list, double racket_pos)
     }
 }
 
+/* Adds a bonus on a list */
 void addBonus(BonusList *list, Coords3D coords, double radius, Bonus type)
 {
     BonusObject *to_insert = initBonus(coords, radius, type);
@@ -87,6 +106,7 @@ void addBonus(BonusList *list, Coords3D coords, double radius, Bonus type)
     tmp->next_bonus = to_insert;
 }
 
+/* Adds a random positioned bonus in the list */
 void addRandomBonus(BonusList *list, double ball_pos, double limit)
 {
     if (list->last_bonus == NULL || list->last_bonus->coords.z >= ball_pos - 3)
@@ -128,6 +148,7 @@ void addRandomBonus(BonusList *list, double ball_pos, double limit)
     }
 }
 
+/* Checks if a 3D point is included in a sphere */
 int pointInSphere(Coords3D origin, Coords point, double section, double radius)
 {
     double x = pow((point.x - origin.x), 2);
@@ -142,6 +163,7 @@ int pointInSphere(Coords3D origin, Coords point, double section, double radius)
     return 0;
 }
 
+/* Checks if a rectangle goes through a bonus */
 int squareInBonus(BonusObject bonus, RectanglePoints rect, double section)
 {
     if (pointInSphere(bonus.coords, rect.a, section, bonus.r))
@@ -163,6 +185,7 @@ int squareInBonus(BonusObject bonus, RectanglePoints rect, double section)
     return 0;
 }
 
+/*Frees the bonus list */
 void freeBonus(BonusList *list)
 {
     if (list == NULL)
@@ -182,6 +205,7 @@ void freeBonus(BonusList *list)
     list = NULL;
 }
 
+/* Removes the first bonus of the list */
 void removeFirst(BonusList *list)
 {
     if (list == NULL)

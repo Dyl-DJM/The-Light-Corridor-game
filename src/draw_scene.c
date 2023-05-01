@@ -1,9 +1,26 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Draw Scene module is used to build the        =
+=  graphical aspects of the 3D game.                 =
+=  It's all about drawing there.                     =
+=													 =
+======================================================
+*/
+
 #include "../inc/draw_scene.h"
 
+/*=================================== Variables ======================================*/
 int nb_section = 7;
 
-Coords thrownBall;
+Coords thrownBall; // Coordinates of the ball at the moment we want it to be thrown
 
+/*=================================== Functions ======================================*/
+
+/* Draw the origin of the scene */
 void drawOrigin()
 {
     glBegin(GL_LINES);
@@ -23,6 +40,7 @@ void drawOrigin()
     glEnd();
 }
 
+/* Draws the 2D racket */
 void drawRacket(double center_x, double center_y, double size, RectanglePoints *racket_points, Bonus bonus)
 {
     float racket_pos_y = 0.25;
@@ -69,6 +87,7 @@ void drawRacket(double center_x, double center_y, double size, RectanglePoints *
     glPopMatrix();
 }
 
+/* Draws the 3D ball */
 void drawBall(Coords3D *ball)
 {
 
@@ -83,7 +102,7 @@ void drawBall(Coords3D *ball)
     glPopMatrix();
 }
 
-/*Draw the ball in the scene*/
+/* Draws the ball glued to the racket */
 void drawBallWithRacket(double x, double y, Coords3D *ball)
 {
     float ball_pos_y = 0.25;
@@ -115,6 +134,7 @@ void drawBallWithRacket(double x, double y, Coords3D *ball)
     glPopMatrix();
 }
 
+/* Draws a section of the corridor */
 void drawSection(int id)
 {
     glPushMatrix();
@@ -177,7 +197,7 @@ void drawSection(int id)
     glPopMatrix();
 }
 
-/* Draw the whole corridor in the scene*/
+/* Draw the whole corridor in the scene */
 void drawCorridor()
 {
     for (int i = racket_pos; i > racket_pos - nb_section; i--)
@@ -189,6 +209,7 @@ void drawCorridor()
     }
 }
 
+/* Draws a single obstacle */
 void drawObstacle(Obstacle *obstacle)
 {
     int section = obstacle->section;
@@ -208,6 +229,7 @@ void drawObstacle(Obstacle *obstacle)
     glPopMatrix();
 }
 
+/* Draws all the obstacles in the list */
 void drawObstacles(ObstacleList list)
 {
     Obstacle *obstacle = list.first_obs;
@@ -223,6 +245,7 @@ void drawObstacles(ObstacleList list)
     }
 }
 
+/* Draws a bonus object */
 void drawBonus(BonusObject bonus)
 {
     glPushMatrix();
@@ -233,6 +256,7 @@ void drawBonus(BonusObject bonus)
     glPopMatrix();
 }
 
+/* Draws all the bonus objects stored in the list */
 void drawManyBonus(BonusList list)
 {
     BonusObject *bonus = list.first_bonus;
@@ -248,6 +272,7 @@ void drawManyBonus(BonusList list)
     }
 }
 
+/* Sets the light system following the ball */
 void setLightBall(Coords3D ball)
 {
     GLfloat light_ambient[] = {1.0, 1.0, 1.0, 1.0};
@@ -262,6 +287,7 @@ void setLightBall(Coords3D ball)
     glEnable(GL_LIGHT0);
 }
 
+/* Sets the light system behinf the racket */
 void setLightCamera(Coords3D ball)
 {
     GLfloat light_ambient[] = {1.0, 1.0, 1.0, 1.0};
@@ -284,7 +310,7 @@ void setLightCamera(Coords3D ball)
     glEnable(GL_LIGHT1);
 }
 
-/* Draw the x, y, z axis */
+/* Draws a single frame, the whole scene elements */
 void drawFrame(double x, double y, double racket_size, MovingState ball_state, ObstacleList obstacles, RectanglePoints *racket_points, Coords3D *ball, Bonus bonus, BonusList bonus_list)
 {
     if (isCorridorEnd(racket_pos - 2))
@@ -295,26 +321,27 @@ void drawFrame(double x, double y, double racket_size, MovingState ball_state, O
     }
     drawCorridor();
 
-    /* Draw Obstacles*/
+    /* Draw of the obstacles*/
     drawObstacles(obstacles);
 
+    /* Draw of the bonus */
     drawManyBonus(bonus_list);
 
     /* Draw the racket */
     drawRacket(x, y, racket_size, racket_points, bonus);
 
-    /* Configure Lighting*/
+    /* Configure Lighting */
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);
     setLightCamera(*ball);
     setLightBall(*ball);
 
-    if (ball_state == MOVING)
+    if (ball_state == MOVING) // The ball is moving in the corridor
     {
         drawBall(ball);
     }
     else
     {
-        drawBallWithRacket(x, y, ball);
+        drawBallWithRacket(x, y, ball); // The ball follows the racket center
     }
 }

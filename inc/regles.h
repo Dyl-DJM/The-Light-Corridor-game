@@ -1,3 +1,17 @@
+/*
+======================================================
+=  													 =
+=    Created by Nicolas Atrax and Dylan DE JESUS	 =
+=													 =
+=													 =
+=  The Rules module is used to represents the whole  =
+=  game mechanic and rules, the amount of life       =
+=  points allowed for the user, the length of the	 =
+=  corridor...  									 =
+=													 =
+======================================================
+*/
+
 #pragma once
 
 #include "../inc/types.h"

@@ -71,7 +71,7 @@ To catch a bonus or make the ball bounce on it, he must put the racket to make t
 
 ## Optimizations
 
-Creating a new version with more intricate shapes and enhanced textures could be an interesting direction to take this project in.
+Creating a new version with more intricate shapes and enhanced textures could be an interesting direction to take this project in. Morevoer, a better end animation in the 3D scene (change the camera position) and result windows could be done in the future.
 
 
 

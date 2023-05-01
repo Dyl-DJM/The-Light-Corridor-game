@@ -14,11 +14,6 @@ This work was done in partnership by two computer sciences students.
 
 
 
-
-
-
-
-
 ## Requirements
 
 To make this project run, OpenGL must be installed.
@@ -76,7 +71,7 @@ To catch a bonus or make the ball bounce on it, he must put the racket to make t
 
 ## Optimizations
 
-Creating a new version with more intricate shapes, improved 3D scene lighting, and enhanced textures could be an interesting direction to take this project in.
+Creating a new version with more intricate shapes and enhanced textures could be an interesting direction to take this project in.
 
 
 
